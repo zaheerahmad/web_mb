@@ -1,0 +1,1 @@
+[03-Sep-2014 09:32:23 UTC] PHP Fatal error:  Call to undefined function getDetailsOfGame() in /home/triapptech/public_html/meterbreak/WebServices/getDetailsOfGame.php on line 7

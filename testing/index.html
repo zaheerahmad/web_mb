@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Meterbreak</title>
+	<link rel="shortcut icon" href="favicon.ico">
+	<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,700">
+	<link rel="stylesheet" href="css/themes/default/jquery.mobile-1.4.3.min.css">
+	<link rel="stylesheet" href="css/main.css">
+	<!-- <link rel="stylesheet" href="_assets/css/jqm-demos.css"> -->
+	<script src="js/jquery.js"></script>
+	<!-- <script src="_assets/js/index.js"></script> -->
+	<script src="js/jquery.mobile-1.4.3.min.js"></script>
+	<script>
+	$(document).ready(function(){
+	
+		function getTopTenGames(category,type)
+		{
+			$('#TopGamesHeading').html('Top 10 ' + type + ' Games');
+			var ul, li , a , img, span1, h2, p1, p2 , div, span2, thermometer;
+			$.post("WebServices/getTopTenGames.php",
+			  {
+				platform:category
+			  },
+			  function(data,status){
+				//alert("Data: " + data + "\nStatus: " + status);
+				
+				var jsonObj = $.parseJSON(data);
+				var game = '';
+				if(jsonObj.code == 0)
+				{
+					var gameData = jsonObj.response;
+					
+					for(var i = 1 ; i <= jsonObj.rowCount ; i++)
+					{
+						li = '<li data-icon="false">';
+						a = '<a href="#">';
+						img = '<img src="' + gameData[i - 1].img + '" height="101" width="88">';
+						span1 = '<span class="discrip">' + i + '</span>';
+						h2 = '<h2>&nbsp ' + gameData[i-1].title +'</h2>';
+						p1 = '<p>&nbsp '+ gameData[i-1].content +'</p>';
+						p2 = '<p class="c-name"> &nbsp&nbsp' + gameData[i-1].postDate + ' | ' + gameData[i-1].postAuthor +'</p>';
+						var therm = parseInt(((gameData[i-1].rating)/10)) ;
+						if(gameData[i-1].rating >= 90)
+						{
+							div = '<div class="meter-full">';
+							thermometer = '<div class="thermometer"></div></div></a></li>';
+						}
+						else 
+						{
+							div = '<div class="meter">';
+							thermometer = '<div class="thermometer-'+ therm +' thermometer-main"></div>';
+						}
+						span2 = '<span class="ui-li-count">'+ gameData[i-1].rating +'</span>';
+
+						game =  game + li + a + img + span1 + h2 + p1 + p2 + div + span2 + thermometer;
+					}
+					
+					
+					$('#top10Games').html(game);
+					$('#top10Games').listview('refresh');
+
+				}
+				else if (jsonObj == -1)
+				{
+					$('#top10Games').html("DB Connectivity Failed");
+				}
+				else
+				{
+					$('#top10Games').html("No Game Found");
+				}
+			  });
+		};
+	
+		$("#topp").click(function(){
+			getTopTenGames('all','');
+			});
+		
+		$("#xbox_360").click(function(){
+			getTopTenGames('xbox-360','Xbox 360');
+		});
+		
+		$("#xbox-one").click(function(){
+			getTopTenGames('xbox-one','Xbox One');
+		});
+		
+		$("#playstation-3").click(function(){
+			getTopTenGames('playstation-3','PlayStation 3');
+		});
+		
+		$("#playstation-4").click(function(){
+			getTopTenGames('playstation-4','PlayStation 4');
+		});
+		
+		$("#wiiu").click(function(){
+			getTopTenGames('wiiu','WiiU');
+		});
+		
+		$("#psvita").click(function(){
+			getTopTenGames('vita','PS Vita');
+		});
+		
+		$("#android-game").click(function(){
+			getTopTenGames('android','Android');
+		});
+		
+		$("#3ds-game").click(function(){
+			getTopTenGames('3ds','3DS');
+		});
+		
+		$("#ios-game").click(function(){
+			getTopTenGames('ios','iOS');
+		});
+		
+		$("#windows-game").click(function(){
+			getTopTenGames('windows','Windows');
+		});
+			
+	});
+	
+	
+	$( document ).on( "pagecreate", "#page", function() {
+
+		$( document ).on( "swipeleft swiperight", "#page", function( e ) {
+				// We check if there is no open panel on the page because otherwise
+				// a swipe to close the left panel would also open the right panel (and v.v.).
+				// We do this by checking the data that the framework stores on the page element (panel: open).
+				if ( $( ".ui-page-active" ).jqmData( "panel" ) !== "open" ) {
+					if ( e.type === "swipeleft" ) {
+						$( "#right-panel" ).panel( "open" );
+					} else if ( e.type === "swiperight" ) {
+						$( "#left-panel" ).panel( "open" );
+					}
+				}
+			});
+			
+			
+	});
+	</script>
+	<style>
+	#demo-page :not(INPUT):not(TEXTAREA) {
+			-webkit-user-select: none;
+			-moz-user-select: none;
+			-ms-user-select: none;
+			-o-user-select: none;
+			user-select: none;
+		}
+	</style>
+</head>
+<body>
+	<div data-role="page" id="home" data-url="home">
+		<div data-role="header" data-theme="b" data-position="fixed"  data-tap-toggle="false">
+			<h1 title="MeterBreak"><img src="images/logo.png" alt="" style="height:40px;"></h1>
+			<a href="#left-panel" data-icon="bars" data-iconpos="notext" data-shadow="false" data-iconshadow="false" class="ui-nodisc-icon app-menu-bt">Open left panel</a>
+		</div><!-- /header -->
+		<div role="main" class="ui-content">
+			
+		</div><!-- /content -->
+		<div data-role="panel" id="left-panel" data-theme="b">
+			<ul data-role="listview">
+            
+                <li><a href="#platforms" data-transition="flip">Platforms</a></li>
+                <li><a href="250games.html">Top 250 Games</a></li>
+                <li><a href="forums.html">Forums</a></li>
+                <li><a href="meltingpoint.html">Melting Point</a></li>
+                <li><a href="staff.html">Staff</a></li>
+                <li><a href="searchgame.html">Search for a game</a></li>
+                <li><a href="help.html">Help</a></li>
+                <li><a href="dailypoll.html">Daily Poll</a></li>
+                <li><a href="Profile">Profile toolbars</a></li>
+                
+        </ul>
+		</div><!-- /panel -->
+		<!-- <div data-role="panel" id="right-panel" data-display="push" data-position="right" data-theme="b">
+			<p>Right push panel.</p>
+			<a href="#" data-rel="close" class="ui-btn ui-corner-all ui-shadow ui-mini ui-btn-inline ui-icon-delete ui-btn-icon-right">Close</a> -->
+		</div><!-- /panel -->
+	
+	<div data-role="page" id="platforms" data-url="platforms">
+		<div data-role="header" data-theme="b" data-position="fixed"  data-tap-toggle="false">
+			<h1 title="MeterBreak"><img src="images/logo.png" alt="" style="height:40px;"></h1>
+			<a href="#left-panel" data-icon="bars" data-iconpos="notext" data-shadow="false" data-iconshadow="false" class="ui-nodisc-icon app-menu-bt">Open left panel</a>
+		</div><!-- /header -->
+		<ul class="fav-links cf">
+					<li id="topp"><a href="#top-10"data-transition="flip"><img src="images/top10.png" alt=""></a></li>
+					<li><a href="#news"data-transition="flip"><img src="images/news.png" alt=""></a></li>
+					<li><a href=""><img src="images/friends.png" alt=""></a></li>
+					<li><a href=""><img src="images/comingsoon.png" alt=""></a></li>
+					<li><a href=""><img src="images/barcode.png" alt=""></a></li>
+			</ul>
+		<div role="main" class="ui-content">
+			
+			<div class="container">				
+				<h1>Please select the platform you are looking for</h1>
+				<div class="ui-grid-a">
+    				<div class="ui-block-a">
+    					<div class="ui-bar ui-bar-a">
+    						<a href="#xbox360" data-rel="popup" data-transition="flip" class="">
+                  <img src="images/xbox360.jpg" alt="">
+                </a>
+                <div data-role="popup" id="xbox360" data-theme="b">
+                    <ul data-role="listview" data-inset="true" style="min-width:210px;">
+                        <li data-role="list-divider">Choose an action</li>
+                        <li><a href="#">News</a></li>
+                        <li id="xbox_360"><a href="#top-10">Top 10</a></li>                       
+                    </ul>
+                </div>
+    					</div>
+    				</div>
+   					 <div class="ui-block-b">
+   					 	<div class="ui-bar ui-bar-a">
+   					 		<a href="#xboxone" data-rel="popup" data-transition="flip"><img src="images/xboxone.jpg" alt=""></a>
+                 <div data-role="popup" id="xboxone" data-theme="b">
+                    <ul data-role="listview" data-inset="true" style="min-width:210px;">
+                        <li data-role="list-divider">Choose an action</li>
+                        <li><a href="#">News</a></li>
+                        <li id="xbox-one"><a href="#top-10">Top 10</a></li>                       
+                    </ul>
+                </div>
+   					 	</div>
+   					 </div>
+   					 <div class="ui-block-a">
+    					<div class="ui-bar ui-bar-a">
+    						<a href="#ps3" data-rel="popup" data-transition="flip">
+                  <img src="images/ps3.jpg" alt="">
+                </a>
+                <div data-role="popup" id="ps3" data-theme="b">
+                  <ul data-role="listview" data-inset="true" style="min-width:210px;">
+                      <li data-role="list-divider">Choose an action</li>
+                      <li><a href="#">News</a></li>
+                      <li id="playstation-3"><a href="#top-10">Top 10</a></li>                       
+                  </ul>
+              </div>
+    					</div>
+    				</div>
+
+   					 <div class="ui-block-b">
+   					 	<div class="ui-bar ui-bar-a">
+   					 		<a href="#ps4" data-rel="popup" data-transition="flip"><img src="images/ps4.jpg" alt=""></a>
+                <div data-role="popup" id="ps4" data-theme="b">
+                  <ul data-role="listview" data-inset="true" style="min-width:210px;">
+                      <li data-role="list-divider">Choose an action</li>
+                      <li><a href="#">News</a></li>
+                      <li id="playstation-4"><a href="#top-10">Top 10</a></li>                       
+                  </ul>
+                </div>
+   					 	</div>
+   					 </div>
+
+   					 <div class="ui-block-a">
+    					<div class="ui-bar ui-bar-a">
+    						<a href="#wii" data-rel="popup" data-transition="flip">
+                  <img src="images/wii.jpg" alt="">
+                </a>
+                <div data-role="popup" id="wii" data-theme="b">
+                  <ul data-role="listview" data-inset="true" style="min-width:210px;">
+                      <li data-role="list-divider">Choose an action</li>
+                      <li><a href="#">News</a></li>
+                      <li id="wiiu"><a href="#top-10">Top 10</a></li>                       
+                  </ul>
+    					   </div>
+    				  </div>
+            </div>
+
+   					 <div class="ui-block-b">
+   					 	<div class="ui-bar ui-bar-a">
+   					 		<a href="#vita" data-rel="popup" data-transition="flip"><img src="images/psvita.jpg" alt=""></a>
+                <div data-role="popup" id="vita" data-theme="b">
+                  <ul data-role="listview" data-inset="true" style="min-width:210px;">
+                      <li data-role="list-divider">Choose an action</li>
+                      <li><a href="#">News</a></li>
+                      <li id="psvita"><a href="#top-10">Top 10</a></li>                       
+                  </ul>
+   					 	</div>
+   					 </div>
+            </div>
+
+   					 <div class="ui-block-a">
+    					<div class="ui-bar ui-bar-a">
+    						<a href="#android" data-rel="popup" data-transition="flip">
+                  <img src="images/android.jpg" alt="">
+                </a>
+                <div data-role="popup" id="android" data-theme="b">
+                  <ul data-role="listview" data-inset="true" style="min-width:210px;">
+                      <li data-role="list-divider">Choose an action</li>
+                      <li><a href="#">News</a></li>
+                      <li id="android-game" ><a href="#top-10">Top 10</a></li>                       
+                  </ul>
+    					</div>
+    				</div>
+            </div>
+
+   					 <div class="ui-block-b">
+   					 	<div class="ui-bar ui-bar-a">
+   					 		<a <a href="#3ds" data-rel="popup" data-transition="flip">
+                  <img src="images/3ds.jpg" alt="">
+                </a>
+                <div data-role="popup" id="3ds" data-theme="b">
+                  <ul data-role="listview" data-inset="true" style="min-width:210px;">
+                      <li data-role="list-divider">Choose an action</li>
+                      <li><a href="#">News</a></li>
+                      <li id="3ds-game" ><a href="#top-10">Top 10</a></li>                       
+                  </ul>
+   					 	</div>
+   					 </div>
+            </div>
+   					 <div class="ui-block-a">
+    					<div class="ui-bar ui-bar-a">
+    						<a href="#ios" data-rel="popup" data-transition="flip"><img src="images/ios.jpg" alt=""></a>
+                <div data-role="popup" id="ios" data-theme="b">
+                  <ul data-role="listview" data-inset="true" style="min-width:210px;">
+                      <li data-role="list-divider">Choose an action</li>
+                      <li><a href="#">News</a></li>
+                      <li id="ios-game" ><a href="#top-10">Top 10</a></li>                       
+                  </ul>
+    					</div>
+    				</div>
+             </div>
+   					 <div class="ui-block-b">
+   					 	<div class="ui-bar ui-bar-a">
+   					 		<a href="#pc2" data-rel="popup" data-transition="flip"><img src="images/pc2.jpg" alt=""></a>
+                <div data-role="popup" id="pc2" data-theme="b">
+                  <ul data-role="listview" data-inset="true" style="min-width:210px;">
+                      <li data-role="list-divider">Choose an action</li>
+                      <li><a href="#">News</a></li>
+                      <li id="windows-game"><a href="#top-10">Top 10</a></li>                       
+                  </ul>
+   					 	</div>
+   					 </div>
+              </div>
+				</div><!-- /grid-a -->
+				
+			</div>
+		</div><!-- /content -->
+		<div data-role="panel" id="left-panel" data-theme="b">
+			<ul data-role="listview">
+            
+                <li><a href="#platforms" data-transition="flip">Platforms</a></li>
+                <li><a href="250games.html">Top 250 Games</a></li>
+                <li><a href="forums.html">Forums</a></li>
+                <li><a href="meltingpoint.html">Melting Point</a></li>
+                <li><a href="staff.html">Staff</a></li>
+                <li><a href="searchgame.html">Search for a game</a></li>
+                <li><a href="help.html">Help</a></li>
+                <li><a href="dailypoll.html">Daily Poll</a></li>
+                <li><a href="Profile">Profile toolbars</a></li>
+                
+        </ul>
+		</div><!-- /panel -->
+		<!-- <div data-role="panel" id="right-panel" data-display="push" data-position="right" data-theme="b">
+			<p>Right push panel.</p>
+			<a href="#" data-rel="close" class="ui-btn ui-corner-all ui-shadow ui-mini ui-btn-inline ui-icon-delete ui-btn-icon-right">Close</a> -->
+		</div><!-- /panel -->
+
+    <div data-role="page" id="top-10" data-url="page">
+    <div data-role="header" data-theme="b" data-position="fixed">
+      <h1 title="MeterBreak"><img src="images/logo.png" alt="" style="height:40px;"></h1>
+      <a href="#left-panel" data-icon="bars" data-iconpos="notext" data-shadow="false" data-iconshadow="false" class="ui-nodisc-icon app-menu-bt">Open left panel</a>
+    </div><!-- /header -->
+    <ul class="fav-links cf">
+          <li  id="topp" class="active"><a href=""><img src="images/top10.png" alt=""></a></li>
+          <li><a href="#news"data-transition="flip"><img src="images/news.png" alt=""></a></li>
+          <li><a href=""><img src="images/friends.png" alt=""></a></li>
+          <li><a href=""><img src="images/comingsoon.png" alt=""></a></li>
+          <li><a href=""><img src="images/barcode.png" alt=""></a></li>
+      </ul>
+    <div role="main" class="ui-content">
+      <div class="container">
+        <h2 id="TopGamesHeading">Hot 10 Playstation 3 Games</h2>
+        <ul data-role="listview" data-inset="true" data-theme="b" class="top-10" id ="top10Games">
+         <img src="images/loading.gif" alt="Loading...">
+		</ul>
+        
+      </div>
+    </div><!-- /content -->
+    <div data-role="panel" id="left-panel" data-theme="b">
+      <ul data-role="listview">
+            
+                <li><a href="platforms.html">Platforms</a></li>
+                <li><a href="250games.html">Top 250 Games</a></li>
+                <li><a href="forums.html">Forums</a></li>
+                <li><a href="meltingpoint.html">Melting Point</a></li>
+                <li><a href="staff.html">Staff</a></li>
+                <li><a href="searchgame.html">Search for a game</a></li>
+                <li><a href="help.html">Help</a></li>
+                <li><a href="dailypoll.html">Daily Poll</a></li>
+                <li><a href="Profile">Profile toolbars</a></li>
+                
+        </ul>
+    </div><!-- /panel -->
+    <!-- <div data-role="panel" id="right-panel" data-display="push" data-position="right" data-theme="b">
+      <p>Right push panel.</p>
+      <a href="#" data-rel="close" class="ui-btn ui-corner-all ui-shadow ui-mini ui-btn-inline ui-icon-delete ui-btn-icon-right">Close</a> -->
+    </div><!-- /panel -->
+
+    <div data-role="page" id="news" data-url="page">
+    <div data-role="header" data-theme="b" data-position="fixed">
+      <h1 title="MeterBreak"><img src="images/logo.png" alt="" style="height:40px;"></h1>
+      <a href="#left-panel" data-icon="bars" data-iconpos="notext" data-shadow="false" data-iconshadow="false" class="ui-nodisc-icon app-menu-bt">Open left panel</a>
+    </div><!-- /header -->
+    <ul class="fav-links cf">
+          <li  id="topp" ><a href="#top-10"data-transition="flip"><img src="images/top10.png"alt=""></a></li>
+          <li class="active"><a href=""><img src="images/news.png" alt=""></a></li>
+          <li><a href=""><img src="images/friends.png" alt=""></a></li>
+          <li><a href=""><img src="images/comingsoon.png" alt=""></a></li>
+          <li><a href=""><img src="images/barcode.png" alt=""></a></li>
+      </ul>
+    <div role="main" class="ui-content">
+      <div class="container">
+      <h2>Top News Stories for Playstation 3</h2>
+        <div class="main-news">
+          <div class="big-news">
+            <a href="">
+              <img src="images/tekken3.jpg" alt="">
+              <span class="news-discrip">
+                <p><strong>Tekken Tag Tournament 2</strong></p>
+                <p class="sm">One of leading fighting games in world.</p>
+                <p class="ex-sm">30 June,2014</p>
+              </span>
+            </a>
+          </div>
+          <div class="small-news">
+            <div class="news"style="margin-right: .5%;">
+              <a href="">
+                <img src="images/tekken2.jpg" alt="">
+                <span class="news-discrip">
+                  <p><strong>Tekken Tag Tournament 2</strong></p>
+                  <p class="sm">One of leading fighting games in world.</p>
+                  <p class="ex-sm">30 June,2014</p>
+                </span>
+              </a>
+            </div>
+            <div class="news"style="margin-left: .5%;">
+              <a href="">
+                <img src="images/tekken1.jpg" alt="">
+                <span class="news-discrip">
+                  <p><strong>Tekken Tag Tournament 2</strong></p>
+                  <p class="sm">One of leading fighting games in world.</p>
+                  <p class="ex-sm">30 June,2014</p>
+                </span>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="sub-news">
+          <h2>More News for Playstation 3</h2>
+          <ul data-role="listview" data-inset="true" data-theme="b" class="top-10">
+            <li data-icon="false">
+          <a href="#">
+            <img src="images/download1.jpg">
+            <span class="discrip">1</span>
+            <h2>Metal Gear Solid 5</h2>
+            <p>Metal Gear Solid V: The Phantom Pain is a separated composite of two previously announced Kojima Productions projects, the both of which formed a complex deception.</p>
+            <p class="c-name">May 1,2014 | Rahmet Hameed</p>
+            <div class="meter-full">
+              <span class="ui-li-count">100</span>
+              <div class="thermometer"></div>
+            </div>
+          </a>
+        </li>
+         <li data-icon="false">
+          <a href="#">
+          <img src="images/download.jpg">
+          <span class="discrip">2</span>
+            <h2>Tekken Tag Tournment 2</h2>
+            <p>One of leading fighting games in world.</p>
+            <p class="c-name">May 1,2014 | Rahmet Hameed</p>
+            
+            <div class="meter">
+              <span class="ui-li-count">90</span>
+              <div class="thermometer-9 thermometer-main"></div>
+            </div>
+          </a>
+        </li>
+        <li data-icon="false">
+          <a href="#">
+            <img src="images/download1.jpg">
+            <span class="discrip">3</span>
+            <h2>Metal Gear Solid 5</h2>
+            <p>Metal Gear Solid V: The Phantom Pain is a separated composite of two previously announced Kojima Productions projects, the both of which formed a complex deception.</p>
+            <p class="c-name">May 1,2014 | Rahmet Hameed</p>
+            <div class="meter">
+              <span class="ui-li-count">80</span>
+              <div class="thermometer-8 thermometer-main"></div>
+            </div>
+          </a>
+        </li>
+        <li data-icon="false">
+          <a href="#">
+          <img src="images/download.jpg">
+          <span class="discrip">4</span>
+            <h2>Tekken Tag Tournment 2</h2>
+            <p>One of leading fighting games in world.</p>
+            <p class="c-name">May 1,2014 | Rahmet Hameed</p>
+            <div class="meter">
+              <span class="ui-li-count">70</span>
+              <div class="thermometer-7 thermometer-main"></div>
+            </div>
+          </a>
+        </li>
+        <li data-icon="false">
+          <a href="#">
+            <img src="images/download1.jpg">
+            <span class="discrip">5</span>
+            <h2>Metal Gear Solid 5</h2>
+            <p>Metal Gear Solid V: The Phantom Pain is a separated composite of two previously announced Kojima Productions projects, the both of which formed a complex deception.</p>
+            <p class="c-name">May 1,2014 | Rahmet Hameed</p>
+            <div class="meter">
+              <span class="ui-li-count">60</span>
+              <div class="thermometer-6 thermometer-main"></div>
+            </div>
+          </a>
+        </li>
+        <li data-icon="false">
+          <a href="#">
+          <img src="images/download.jpg">
+          <span class="discrip">6</span>
+            <h2>Tekken Tag Tournment 2</h2>
+            <p>One of leading fighting games in world.</p>
+            <p class="c-name">May 1,2014 | Rahmet Hameed</p>
+            <div class="meter">
+              <span class="ui-li-count">50</span>
+              <div class="thermometer-5 thermometer-main"></div>
+            </div>
+          </a>
+        </li>
+        <li data-icon="false">
+          <a href="#">
+            <img src="images/download1.jpg">
+            <span class="discrip">7</span>
+            <h2>Metal Gear Solid 5</h2>
+            <p>Metal Gear Solid V: The Phantom Pain is a separated composite of two previously announced Kojima Productions projects, the both of which formed a complex deception.</p>
+            <p class="c-name">May 1,2014 | Rahmet Hameed</p>
+            <div class="meter">
+              <span class="ui-li-count">40</span>
+              <div class="thermometer-4 thermometer-main"></div>
+            </div>
+          </a>
+        </li>
+        <li data-icon="false">
+          <a href="#">
+          <img src="images/download.jpg">
+          <span class="discrip">8</span>
+            <h2>Tekken Tag Tournment 2</h2>
+            <p>One of leading fighting games in world.</p>
+            <p class="c-name">May 1,2014 | Rahmet Hameed</p>
+            <div class="meter">
+              <span class="ui-li-count">30</span>
+              <div class="thermometer-3 thermometer-main"></div>
+            </div>
+          </a>
+        </li>
+        <li data-icon="false">
+          <a href="#">
+            <img src="images/download1.jpg">
+            <span class="discrip">9</span>
+            <h2>Metal Gear Solid 5</h2>
+            <p>Metal Gear Solid V: The Phantom Pain is a separated composite of two previously announced Kojima Productions projects, the both of which formed a complex deception.</p>
+            <p class="c-name">May 1,2014 | Rahmet Hameed</p>
+            <div class="meter">
+              <span class="ui-li-count">20</span>
+              <div class="thermometer-2 thermometer-main"></div>
+            </div>
+          </a>
+        </li>
+        <li data-icon="false">
+          <a href="#">
+          <img src="images/download.jpg">
+          <span class="discrip">10</span>
+            <h2>Tekken Tag Tournment 2</h2>
+            <p>One of leading fighting games in world.</p>
+            <p class="c-name">May 1,2014 | Rahmet Hameed</p>
+          </a>
+          <div class="meter">
+              <span class="ui-li-count">10</span>
+              <div class="thermometer-1 thermometer-main"></div>
+            </div>
+        </li>
+      </ul>
+        </div>
+          </div>
+    </div><!-- /content -->
+    <div data-role="panel" id="left-panel" data-theme="b">
+      <ul data-role="listview">
+            
+                <li><a href="platforms.html">Platforms</a></li>
+                <li><a href="250games.html">Top 250 Games</a></li>
+                <li><a href="forums.html">Forums</a></li>
+                <li><a href="meltingpoint.html">Melting Point</a></li>
+                <li><a href="staff.html">Staff</a></li>
+                <li><a href="searchgame.html">Search for a game</a></li>
+                <li><a href="help.html">Help</a></li>
+                <li><a href="dailypoll.html">Daily Poll</a></li>
+                <li><a href="Profile">Profile toolbars</a></li>
+                
+        </ul>
+    </div><!-- /panel -->
+    <!-- <div data-role="panel" id="right-panel" data-display="push" data-position="right" data-theme="b">
+      <p>Right push panel.</p>
+      <a href="#" data-rel="close" class="ui-btn ui-corner-all ui-shadow ui-mini ui-btn-inline ui-icon-delete ui-btn-icon-right">Close</a> -->
+    </div><!-- /panel -->
+</body>
+</html>
