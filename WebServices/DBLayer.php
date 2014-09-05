@@ -1,7 +1,7 @@
 <?php
 include 'config.php';
 include 'response.php';
-
+header('Content-type: application/json');
 error_reporting(E_ERROR | E_PARSE);
 
 function getNews($platform)
@@ -51,6 +51,7 @@ function getNews($platform)
 
                     $News->content=strip_tags($News->content);
                     $News->content = htmlentities($News->content, UTF-8);
+					$News->content=cleanString($News->content);
                     $News->content=substr($News->content,0,50);
                     
                     $dateSrc = $row["post_date"];
@@ -116,6 +117,7 @@ function getNews($platform)
 
                     $News->content=strip_tags($News->content);
                     $News->content = htmlentities($News->content, UTF-8);
+					$News->content=cleanString($News->content);
                     $News->content=substr($News->content,0,50);
                     
                     $dateSrc = $row["post_date"];
@@ -174,7 +176,9 @@ function getNews($platform)
 
                    $News->content=strip_tags($News->content);
                    $News->content = htmlentities($News->content, UTF-8);
+				   $News->content=cleanString($News->content);
                    $News->content=substr($News->content,0,50);
+				   
                    $dateSrc = $row["post_date"];
                    $dateTime = date_create( $dateSrc);;
                    $News->postDate=date_format( $dateTime, 'F d,Y');
@@ -257,6 +261,7 @@ function getTopTenGames($platform)
             
             $Game->content=strip_tags($Game->content);
             $Game->content = htmlentities($Game->content, UTF-8);
+			$Game->content=cleanString($Game->content);
             $Game->content=substr($Game->content,0,50);
             
             $dateSrc = $row["post_date"];
@@ -324,6 +329,7 @@ function getDetailsOfGame($postID)
             
             $Game->content=strip_tags($Game->content);
             $Game->content = htmlentities($Game->content, UTF-8);
+			$Game->content=cleanString($Game->content);
             
             $dateSrc = $row["post_date"];
             $dateTime = date_create( $dateSrc);;
@@ -390,13 +396,16 @@ function getDetailsOfNews($postID)
 		$News->postAuthor=$row["display_name"];
 		$News->img=$row["guid"];
 		
+//            $News->content = str_replace("\n","<br/>",$News->content);
+                //echo str_replace("\n","<br/>",$News->content);
             /*if (strpos($News->content,'<iframe') != false) {
                         $News->content = preg_replace('/<iframe.*?>/, ', $News->content);   //Remove iframe.. Because we were getting Iframe in content somewhere.
                     }*/
             
-            $News->content=strip_tags($News->content);
-            $News->content = htmlentities($News->content, UTF-8);
-			
+//            $News->content=strip_tags($News->content);
+//            $News->content = htmlentities($News->content, UTF-8);
+            $News->content=cleanString($News->content);
+			$News->content = utf8_encode($News->content);
             $dateSrc = $row["post_date"];
             $dateTime = date_create( $dateSrc);;
             $News->postDate=date_format( $dateTime, 'F d,Y');
@@ -439,5 +448,83 @@ function getDetailsOfNews($postID)
 
 }
 
+function cleanString($inputString)
+{
+			$inputString=str_replace("&#145;", "'",$inputString);
+			$inputString=str_replace("&#146;", "'",$inputString);
+			$inputString=str_replace("&rsquo;", "'",$inputString);
+			$inputString=str_replace("&lsquo;", "'",$inputString);
+			$inputString=str_replace("&ldquo;", "\"",$inputString);
+			$inputString=str_replace("&rdquo;", "\"",$inputString);
+			$inputString=str_replace("&#147;", "\"",$inputString);
+			$inputString=str_replace("&#148;", "\"",$inputString);
+			$inputString=str_replace("&#8220;", "\"",$inputString);
+			$inputString=str_replace("&#8221;", "\"",$inputString);
+			$inputString=str_replace("&#149;", "•",$inputString);
+			$inputString=str_replace("&nbsp;", " ",$inputString);
+			$inputString=str_replace("&#183;", "·",$inputString);
+			$inputString=str_replace("&#159;", "•",$inputString);
+			$inputString=str_replace("&#151;", "-",$inputString);
+			$inputString=str_replace("&#160;", " ",$inputString);
+			$inputString=str_replace("&#038;", "&",$inputString);
+			$inputString=str_replace("&#215;", "×",$inputString);
+			$inputString=str_replace("&#216;", "Ø",$inputString);
+			$inputString=str_replace("&#133;", "...",$inputString);
+			$inputString=str_replace("&#150;", "-",$inputString);
+			$inputString=str_replace("&#8217;", "'",$inputString);
+			$inputString=str_replace("&#8226;", "•",$inputString);
+			$inputString=str_replace("&#167;", "§",$inputString);
+			$inputString=str_replace("&amp;", "&",$inputString);
+			$inputString=str_replace("&bull;", "•",$inputString);
+			$inputString=str_replace("’", "'",$inputString);
+			$inputString=str_replace("‘", "'",$inputString);
+			$inputString=str_replace("&quot;", "\"",$inputString);
+			$inputString=str_replace("&trade;", "™",$inputString);
+			$inputString=str_replace("&rsaquo;", "›",$inputString);
+			$inputString=str_replace("&lsaquo;", "‹",$inputString);
+			$inputString=str_replace("&dagger;", "†",$inputString);
+			$inputString=str_replace("&bdquo;", "„",$inputString);
+			$inputString=str_replace("&frasl;", "/",$inputString);
+			$inputString=str_replace("&lt;", "<",$inputString);
+			$inputString=str_replace("&gt;", ">",$inputString);
+			$inputString=str_replace("&ndash;", "-",$inputString);
+			$inputString=str_replace("&cent;", "¢",$inputString);
+			$inputString=str_replace("&pound;", "£",$inputString);
+			$inputString=str_replace("&yen;", "¥",$inputString);
+			$inputString=str_replace("&sect;", "§",$inputString);
+			$inputString=str_replace("&uml;", "¨",$inputString);
+			$inputString=str_replace("&die;", "¨",$inputString);
+			$inputString=str_replace("&copy;", "©",$inputString);
+			$inputString=str_replace("&reg;", "®",$inputString);
+			$inputString=str_replace("&sup2;", "²",$inputString);
+			$inputString=str_replace("&sup3;", "³",$inputString);
+			$inputString=str_replace("&middot;", "·",$inputString);
+			$inputString=str_replace("&euro;", "€",$inputString);
+			$inputString=str_replace("&brvbar;", "¦",$inputString);
+			$inputString=str_replace("&#8230;", "...",$inputString);
+			$inputString=str_replace("&#09;", " ",$inputString);
+			$inputString=str_replace("&mdash;", "-",$inputString);
+			$inputString=str_replace("â€™", "'",$inputString);
+			$inputString=str_replace("â€œ", "\"",$inputString);
+			$inputString=str_replace("â€ ", "\"",$inputString);
+			$inputString=str_replace("â€“", "-",$inputString);
+			$inputString=str_replace("â€˜", "'",$inputString);
+			$inputString=str_replace("&#8217;", "'",$inputString);
+			$inputString=str_replace("&amp;", "&",$inputString);
+			$inputString= str_replace("\n","<br/>",$inputString);
+			$inputString= str_replace("\r\r","<br/>",$inputString);
+			$inputString=str_replace("&#167;", "§",$inputString);
+			$inputString=str_replace("�", "–",$inputString);
+			
+			$inputString=str_replace("&#8212;","",$inputString);
+			$inputString=str_replace("&#8216;","",$inputString);
+			$inputString=str_replace("&#8220;","",$inputString);
+			$inputString=str_replace("&#8221;","",$inputString);
+			$inputString=str_replace("&#39;","'",$inputString);
+			$inputString=str_replace("&quot;","",$inputString);
+			
+			return $inputString;
+
+}
 
 ?>
