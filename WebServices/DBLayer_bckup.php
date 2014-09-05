@@ -4,6 +4,7 @@ include 'response.php';
 
 error_reporting(E_ERROR | E_PARSE);
 
+Test
 function getNews($platform)
 {
     $jsonResponse = new responsejson();
