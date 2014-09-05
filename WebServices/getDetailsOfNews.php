@@ -1,7 +1,1 @@
-<?php
-		include 'DBLayer.php';
-		error_reporting(E_ERROR | E_PARSE);
-    
-		$postID = $_REQUEST["id"];
-		echo getDetailsOfNews($postID);
-?>
+<?php		include 'DBLayer.php';header('Content-type: application/json');		error_reporting(E_ERROR | E_PARSE);    		$postID = $_REQUEST["id"];		echo getDetailsOfNews($postID);?>
