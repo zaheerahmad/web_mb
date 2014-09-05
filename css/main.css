@@ -324,36 +324,3 @@ display: block;
 padding-right: 2em;	
 width: 112px;
 }
-@media (max-width: 352px){
-	.ui-page{
-		padding-top: 8em !important;
-	}
-}
-@media (min-width: 353px) and (max-width: 510px){
-	.ui-page{
-		padding-top: 9em !important;
-	}
-}
-@media (min-width: 511px) and (max-width: 780px){
-	.ui-page{
-		padding-top: 12em !important;
-	}
-}
-@media (min-width: 781px) and (max-width: 960px){
-	.ui-page{
-		padding-top: 14em !important;
-	}
-}
-@media (min-width: 961px) and (max-width: 1200px){
-	.ui-page{
-		padding-top: 17em !important;
-	}
-}
-@media (min-width: 1201px){
-	.ui-page{
-		padding-top: 19em !important;
-	}
-}
-.ui-bar>a{
-	padding: 0;
-}
