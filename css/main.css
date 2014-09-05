@@ -187,7 +187,7 @@ span.discrip{
 	bottom: 0;
 }
 .news-discrip{
-	background-color:rgba(153,153,153,.7); 
+	background-color:rgba(0,0,0,.7); 
 	color: #fff;
 	height: 3em;
 	width: 100%;
@@ -239,7 +239,7 @@ position: absolute;
 right: .5em;
 top: 1.5em;
 height: 4em;
-width: 1em;
+width: 1.2em;
 }
 .thermometer-1{
 background: 0px 0 url(../images/meter.png) no-repeat;
@@ -323,4 +323,100 @@ max-width: 100%;
 display: block;
 padding-right: 2em;	
 width: 112px;
+}
+@media (max-width: 352px){
+	.ui-page{
+		padding-top: 8em !important;
+	}
+	.sm{
+		font-size: 11px;
+	}
+	.ex-sm{
+		display: none !important;
+	}
+	.news-discrip strong{
+		font-size: 13px;
+	}
+	.small-news .ex-sm,.small-news .sm{
+		display: none;
+	}
+	.small-news p{
+		font-size: 11px;
+	}
+	.news-discrip{
+		height: 2.5em;
+		padding: 4px;
+		height: auto;
+		box-sizing:border-box;
+	}
+	.sub-news h2{
+		font-size: 1.3em;
+	}
+	
+}
+@media (min-width: 353px) and (max-width: 510px){
+	.ui-page{
+		padding-top: 9em !important;
+	}
+	.sub-news h2{
+		font-size: 1.3em;
+	}
+	.small-news .ex-sm,.small-news .sm{
+		display: none;
+	}
+	.news-discrip{
+		height: 2.5em;
+		padding: 4px;
+		height: auto;
+		box-sizing:border-box;
+	}
+}
+@media (min-width: 511px) and (max-width: 780px){
+	.ui-page{
+		padding-top: 12em !important;
+	}
+	.news-discrip{
+		height: 2.5em;
+		padding: 4px;
+		height: auto;
+		box-sizing:border-box;
+	}
+}
+@media (min-width: 781px) and (max-width: 960px){
+	.ui-page{
+		padding-top: 14em !important;
+	}
+	.news-discrip{
+		padding: 4px;
+		height: auto;
+		box-sizing:border-box;
+	}
+}
+@media (min-width: 961px) and (max-width: 1200px){
+	.ui-page{
+		padding-top: 17em !important;
+	}
+	.news-discrip{
+		padding: 4px;
+		height: auto;
+		box-sizing:border-box;
+	}
+}
+@media (min-width: 1201px){
+	.ui-page{
+		padding-top: 19em !important;
+	}
+	.news-discrip{
+		
+		padding: 4px;
+		height: auto;
+		box-sizing:border-box;
+	}
+}
+.ui-bar>a{
+	padding: 0;
+}
+.row{
+	width: 100%;
+	clear: both;
 }
