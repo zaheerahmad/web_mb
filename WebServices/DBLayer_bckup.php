@@ -87,6 +87,8 @@ function getNews($platform)
     }
     
 }
+
+testtt
 function getTopTenGames($platform) 
 {
     
