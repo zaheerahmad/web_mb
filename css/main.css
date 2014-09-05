@@ -30,7 +30,6 @@
 body{
 	/*height: 1200px !important;*/
 }
-
 .ui-overlay-a, .ui-page-theme-a, .ui-page-theme-a .ui-panel-wrapper {
 	/*background-color: #F4BB51;*/
 	background-image: url("../images/cross.jpg");
@@ -82,7 +81,7 @@ ul.fav-links li{
 	display: block;
 	float: left;
 	width: 20%;	
-	padding: 2%;
+	padding: 5%;
 	box-sizing:border-box;
 	-moz-box-shadow: 0 0 5px rgba(0,0,0,.5); /* drop shadow */
 -webkit-box-shadow: 0 0 5px rgba(0,0,0,.5); /* drop shadow */
@@ -231,7 +230,7 @@ p{
 .ex-sm{
 	font-size: xx-small;
 }
-ul.top-10 li{
+li{
 	position: relative;
 }
 .thermometer-main {
@@ -291,36 +290,4 @@ width: 3em;
 .ui-li-count{
 	margin-right: 1em;
 	margin-top: -2em;
-}
-.ui-mygrid div{
-	float: left;
-}
-.ui-mygrid .ui-a{
-	width: 30%;
-	clear: left;
-}
-.ui-mygrid .ui-b{
-	width: 50%;
-}
-.ui-mygrid .ui-c{
-	width: 20%;
-}
-.search{
-	padding-left: 0;
-	padding-right: 0;
-	font-size: .85em;
-}
-.info p{
-	font-weight: bold;
-	color: #452045;
-}
-.staff-detail{
-	margin-top: 2em;
-}
-.staff-detail img{
-float: left;
-max-width: 100%;
-display: block;
-padding-right: 2em;	
-width: 112px;
 }
