@@ -290,32 +290,33 @@ function getDetailsOfGame($postID)
         return json_encode($jsonResponse);
     }
     
-    $query="SELECT p.post_title,p.post_content,p.post_date,usr.display_name,p2.guid,round(avg(g.Score),1) rating
-			FROM wp_gamingordering g , wp_posts p,wp_users usr,wp_posts p2
-			WHERE p.ID={$postID}
-			AND p.post_author = usr.ID
-			AND p.ID = p2.post_parent 
-			AND p2.post_type = 'attachment' ;";
+    $query="SELECT p.post_title,p.post_content,p.post_date,usr.display_name,p2.guid,round(avg(g.Score),1) rating,pm.meta_value
+            FROM wp_gamingordering g , wp_posts p,wp_users usr,wp_posts p2,wp_postmeta pm
+            WHERE p.ID={$postID}
+            AND p.post_author = usr.ID
+            AND p.ID = p2.post_parent 
+            AND p2.post_type = 'attachment'
+            AND p.ID=pm.post_id
+            AND pm.meta_key='GameInformationData'";
 	
 	$result = mysqli_query($con,$query);
-    $resultCount = 0;
-    if($result != null)
+        $resultCount = 0;
+        if($result != null)
         $resultCount = mysqli_num_rows($result);
-    if($resultCount > 0)
-    {
-        $jsonResponse->code = 0;
-        $jsonResponse->status = "Success";
-        $jsonResponse->message = "Detail(s) found!";
+        if($resultCount > 0)
+        {
+            $jsonResponse->code = 0;
+            $jsonResponse->status = "Success";
+            $jsonResponse->message = "Detail(s) found!";
         
-		$row = mysqli_fetch_array($result);
+            $row = mysqli_fetch_array($result);
 
-		$Game = new stdClass();
-                $Game->categories=array();
-                $Game->title=$row["post_title"];
-		$Game->content=$row["post_content"];
-		$Game->postAuthor=$row["display_name"];
-		$Game->rating=$row["rating"];
-		$Game->img=$row["guid"];
+            $Game = new stdClass();
+            $Game->title=$row["post_title"];
+            $Game->content=$row["post_content"];
+            $Game->postAuthor=$row["display_name"];
+            $Game->rating=$row["rating"];
+            $Game->img=$row["guid"];
 		
             /*if (strpos($News->content,'<iframe') != false) {
                         $News->content = preg_replace('/<iframe.*?>/, ', $News->content);   //Remove iframe.. Because we were getting Iframe in content somewhere.
@@ -328,31 +329,14 @@ function getDetailsOfGame($postID)
             $dateTime = date_create( $dateSrc);;
             $Game->postDate=date_format( $dateTime, 'F d,Y');
 			
-			
-            $query2="SELECT t.name
-                    FROM wp_posts p , wp_term_relationships tr, wp_term_taxonomy tt , wp_terms t
-                    WHERE p.ID={$postID}
-                    AND tt.taxonomy='category'
-                    AND p.ID=tr.object_id
-                    AND tr.term_taxonomy_id=tt.term_taxonomy_id
-                    AND tt.term_id=t.term_id;";
-
-			$result2 = mysqli_query($con,$query2);
-			$resultCount2 = 0;
-			if($result2 != null)
-				$resultCount2 = mysqli_num_rows($result2);
-			if($resultCount2 > 0)
-			{
-				$jsonResponse->rowCount=$resultCount2;
-				
-				while($row2 = mysqli_fetch_array($result2))
-				{
-					$category=$row2["name"];
-					array_push($Game->categories,$category);
-					
-				}
-				
-			}
+            $GameInformationData=$row["meta_value"];
+            $GameInformationData=unserialize($GameInformationData);
+            
+            $Game->releaseDate= $GameInformationData['release_date'];
+            $Game->consoles= $GameInformationData['game_console'];
+            $Game->company= $GameInformationData['game_company'];
+            $Game->esrb_rating= $GameInformationData['esrb_rating'];
+            
         array_push($jsonResponse->response,$Game);
         return json_encode($jsonResponse);
     }
@@ -383,12 +367,14 @@ function getDetailsOfNews($postID)
             WHERE p.ID={$postID}
             AND p.post_author = usr.ID
             AND p.ID = p2.post_parent 
-            AND p2.post_type = 'attachment';";
+            AND p2.post_type = 'attachment'
+            GROUP BY p.ID
+            ORDER BY p.post_date DESC,p2.post_modified ASC;";
 	
-    $result = mysqli_query($con,$query);
-    $resultCount = 0;
-    if($result != null)
-        $resultCount = mysqli_num_rows($result);
+            $result = mysqli_query($con,$query);
+            $resultCount = 0;
+            if($result != null)
+                $resultCount = mysqli_num_rows($result);
     if($resultCount > 0)
     {
         $jsonResponse->code = 0;
@@ -450,8 +436,7 @@ function getDetailsOfNews($postID)
         $jsonResponse->message = "No News Detail found!";
         return json_encode($jsonResponse);
     }
-    
-    
+
 }
 
 
