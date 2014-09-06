@@ -395,7 +395,7 @@ function getDetailsOfNews($postID)
 		$News->content=$row["post_content"];
 		$News->postAuthor=$row["display_name"];
 		$News->img=$row["guid"];
-		
+		$News->content = str_replace("//www.","http://www.",$News->content);
 //            $News->content = str_replace("\n","<br/>",$News->content);
                 //echo str_replace("\n","<br/>",$News->content);
             /*if (strpos($News->content,'<iframe') != false) {

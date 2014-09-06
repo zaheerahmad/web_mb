@@ -67,9 +67,9 @@
 
                     $('#top10Games').html(' ');
 
-                    var ul, li, a, img, span1, h2, p1, p2, div, span2, thermometer;
+                    var ul, li, a, img, span1, h2, p1, p2, div, span2, thermometer, div_img, div_det;
 
-                    $.post("WebServices/getTopTenGames.php",
+                    $.post("http://meterbreak.triapptech.com/WebServices/getTopTenGames.php",
 
                         {
 
@@ -102,16 +102,18 @@
                                     li = '<li data-icon="false">';
 
                                     a = '<a class="GetPostID" id="TopGame' + parseInt(i) + '" href="#game-detail" value="' + gameData[i - 1].postID + '">';
+                                    
+                                    //div_img = '';
+                                    
+                                    img = '<div class="li-img"><img src="' + gameData[i - 1].img + '">';
 
-                                    img = '<img src="' + gameData[i - 1].img + '" height="101" width="88">';
+                                    span1 = '<span class="discrip">' + i + '</span></div>';
 
-                                    span1 = '<span class="discrip">' + i + '</span>';
-
-                                    h2 = '<h2>&nbsp ' + gameData[i - 1].title + '</h2>';
+                                    h2 = '<div class="li-detail"><h2>&nbsp ' + gameData[i - 1].title + '</h2>';
 
                                     p1 = '<p>&nbsp ' + gameData[i - 1].content + '...</p>';
 
-                                    p2 = '<p class="c-name"> &nbsp&nbsp' + gameData[i - 1].postDate + ' | ' + gameData[i - 1].postAuthor + '</p>';
+                                    p2 = '<p class="c-name"> &nbsp&nbsp' + gameData[i - 1].postDate + ' | ' + gameData[i - 1].postAuthor + '</p></div>';
 
                                     var therm = parseInt(((gameData[i - 1].rating) / 10));
 
@@ -196,7 +198,7 @@
 
                     $('#showDetails').html(' ');
 
-                    $.post("WebServices/getDetailsOfGame.php",
+                    $.post("http://meterbreak.triapptech.com/WebServices/getDetailsOfGame.php",
 
                         {
 
@@ -314,7 +316,7 @@
 
                     $('#otherNews').html(' ');
 
-                    $.post("WebServices/getNews.php",
+                    $.post("http://meterbreak.triapptech.com/WebServices/getNews.php",
 
                         {
 
@@ -443,15 +445,15 @@
 
                                     details = '<a class="GetNewsID" href="#game-detail" value="' + newsData[i].postID + '">';
 
-                                    thumbnail = '<img src="' + newsData[i].img + '" height="101" width="88">';
+                                    thumbnail = '<div class="li-img"><img src="' + newsData[i].img + '">';
 
-                                    span4 = '<span class="discrip">' + parseInt(i - 2) + '</span>';
+                                    span4 = '<span class="discrip">' + parseInt(i - 2) + '</span></div>';
 
-                                    heading = '<h2>' + newsData[i].title + '</h2>';
+                                    heading = '<div class="li-detail"><h2>' + newsData[i].title + '</h2>';
 
                                     content = '<p>' + newsData[i].content + '...</p>';
 
-                                    nameDate = '<p class="c-name">' + newsData[i].postDate + ' | ' + newsData[i].postAuthor + '</p></a></li>';
+                                    nameDate = '<p class="c-name">' + newsData[i].postDate + ' | ' + newsData[i].postAuthor + '</p></div></a></li>';
 
 
 
@@ -513,7 +515,7 @@
 
                     $('#showDetails').html(' ');
 
-                    $.post("WebServices/getDetailsOfNews.php",
+                    $.post("http://meterbreak.triapptech.com/WebServices/getDetailsOfNews.php",
 
                         {
 
@@ -570,7 +572,7 @@
 
                                 }
 
-                                div5 = '<div class="detail">';
+                                div5 = '</div><div class="detail">';
 
                                 p3 = '<p>' + newsDetails[0].content + '</p></div>';
 
@@ -1074,11 +1076,27 @@
 
                 <ul data-role="listview" data-inset="true" data-theme="b" class="top-10" id="top10Games">
 
+                   <li data-icon="false">
+                      <a href="#game-detail">
+                        <div class="li-img">
+                          <img src="images/download1.jpg">
+                          <span class="discrip">1</span>
+                      </div>
+                      <div class="li-detail">
+                          <h2>Metal Gear Solid 5</h2>
+                          <p>Metal Gear Solid V: The Phantom Pain is a separated composite of two previously announced Kojima Productions projects, the both of which formed a complex deception.</p>
+                          <p class="c-name">May 1,2014 | Rahmet Hameed</p>
+                      </div>
+                      <div class="meter-full">
+                          <span class="ui-li-count">100</span>
+                          <div class="thermometer"></div>
+                      </div>
+                     </a>
+                    </li>               
 
 
 
-
-                </ul>
+          </ul>
 
             </div>
 
