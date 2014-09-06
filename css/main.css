@@ -205,6 +205,10 @@ ul.top-10>li>a>img{
 .big-news{
 	position: relative;
 }
+.big-news img,.detail img{
+	width: 100%;
+	height: auto;
+}
 .main-news img{
 	max-width: 100%;
 	display: block;
