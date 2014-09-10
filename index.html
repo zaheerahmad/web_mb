@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,700">
 
     <link rel="stylesheet" href="css/themes/default/jquery.mobile-1.4.3.min.css">
+	<script type="text/javascript" charset="utf-8" src="cordova.js"></script>
 
     <link rel="stylesheet" href="css/main.css">
 
@@ -175,6 +176,24 @@
 
                 };
 
+				$(document).on("click", "#barcode", function()
+				 {
+
+				 var scanner = cordova.plugins.barcodeScanner;
+
+				scanner.scan(
+					function (result) {
+					alert("We got a barcode\n" +
+					"Result: " + result.text + "\n" +
+					"Format: " + result.format + "\n" +
+					"Cancelled: " + result.cancelled);
+					}, 
+					function (error) {
+					alert("Scanning failed: " + error);
+					}
+					);
+				}
+				   );
 
 
                 $(document).on("click", ".GetGames", function()
@@ -693,7 +712,7 @@
           <li class="GetNews" id="all" value=""><a href="#news"><img src="images/news.png" alt=""></a></li>
           <li><a href=""><img src="images/friends.png" alt=""></a></li>
           <li><a href=""><img src="images/comingsoon.png" alt=""></a></li>
-          <li><a href=""><img src="images/barcode.png" alt=""></a></li>
+          <li id="barcode"><a href=""><img src="images/barcode.png" alt=""></a></li>
       </ul>
     </div><!-- /header -->
 
