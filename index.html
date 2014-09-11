@@ -29,37 +29,93 @@
 
     <script>
         $(document).ready(function()
+        {
+                getTop10Games();
 
-            {
-
-                function loading(showOrHide)
-
+                function getTop10Games()
                 {
+                    loading('show');
 
-                    setTimeout(function()
-
+                    $('#mainTop10').html(' ');
+                    var ul, li, a, img, span1, h2, p1, p2, div, span2, thermometer, div_img, div_det;
+                    $.post("http://meterbreak.triapptech.com/WebServices/getTopTenGames.php",
+                    {
+                        platform: 'all'
+                    },
+                    function(data, status)
+                    {
+                        var jsonObj = data;
+                        var game = '';
+                        if (jsonObj.code == 0)
                         {
-
-                            $("body").append('<div class="modalWindow"/>');
-
-                            if (showOrHide == 'hide')
-
+                            var gameData = jsonObj.response;
+                            for (var i = 1; i <= jsonObj.rowCount; i++)
                             {
+                                li = '<li data-icon="false">';
+                                a = '<a class="GetPostID" id="TopGame' + parseInt(i) + '" href="#game-detail" value="' + gameData[i - 1].postID + '">';
+                                
+                                //div_img = '';
+                                
+                                img = '<div class="li-img"><img src="' + gameData[i - 1].img + '">';
+                                span1 = '<span class="discrip">' + i + '</span></div>';
+                                h2 = '<div class="li-detail"><h2>&nbsp ' + gameData[i - 1].title + '</h2>';
+                                p1 = '<p>&nbsp ' + gameData[i - 1].content + '...</p>';
+                                p2 = '<p class="c-name"> &nbsp&nbsp' + gameData[i - 1].postDate + ' | ' + gameData[i - 1].postAuthor + '</p></div>';
+                                var therm = parseInt(((gameData[i - 1].rating) / 10));
 
-                                $(".modalWindow").remove();
+                                if (gameData[i - 1].rating >= 90)
+                                {
+                                    div = '<div class="meter-full">';
+                                    thermometer = '<div class="thermometer"></div></div></a></li>';
+
+                                } 
+                                else
+                                {
+                                    div = '<div class="meter">';
+                                    thermometer = '<div class="thermometer-' + therm + ' thermometer-main"></div>';
+                                }
+
+                                span2 = '<span class="ui-li-count">' + gameData[i - 1].rating + '</span>';
+
+                                game = game + li + a + img + span1 + h2 + p1 + p2 + div + span2 + thermometer;
 
                             }
 
-                            $.mobile.loading(showOrHide);
+                            loading('hide');
 
-                        }, 1);
+                            $('#mainTop10').html(game);
 
+                            $('#mainTop10').listview('refresh');
+                        } 
+                        else if (jsonObj == -1)
+                        {
+                            loading('hide');
+                            $('#mainTop10').html("DB Connectivity Failed");
+                        } 
+                        else
+                        {
+                            loading('hide');
+                            $('#mainTop10').html("No Game Found");
+                        }
+
+                    });
+                };
+
+                function loading(showOrHide)
+                {
+                    $("body").append('<div class="modalWindow"></div>');
+                    setTimeout(function()
+                    {
+                        if (showOrHide == 'hide')
+                        {
+                            $(".modalWindow").remove();
+                        }
+                        $.mobile.loading(showOrHide);
+                    }, 1);
                 };
 
 
-
                 function getTopTenGames(category, type)
-
                 {
 
                     loading('show');
@@ -525,7 +581,6 @@
 
 
                 function showNewsDetails(post_id)
-
                 {
 
                     loading('show');
@@ -640,9 +695,383 @@
                 });
 
 
+                function getMeltingPoint()
+                {
+                    
+                    loading('show');
+
+                    $('#mps').html(' ');
+
+                    var li, a, h2 , p1 , p2;
+
+                    $.post("http://meterbreak.triapptech.com/WebServices/getMeltingPointStories.php",
+                        {
+                            platform: "fjsdk"
+                        },
+
+                        function(data, status)
+                        {
+                           
+                            var jsonObj = data;
+
+                            var meltingpoints = '';
+
+                            if (jsonObj.code == 0)
+                            {
+                                var mpData = jsonObj.response;
+
+                                for (var i = 0; i < jsonObj.rowCount; i++)
+                                {
+
+                                    li = '<li data-icon="false">';
+
+                                    a = '<a class="GetMP" href="#game-detail" value="'+ mpData[i].postID +'">';
+
+                                    h2 = '<h2>'+ mpData[i].title +'</h2>';
+
+                                    p1 = '<p>'+ mpData[i].content +'...</p>';
+
+                                    p2 = '<p class="c-name">'+ mpData[i].postDate +' | '+ mpData[i].postAuthor +'</p></a></li>';
+
+                                    meltingpoints = meltingpoints + li + a + h2 + p1 + p2 ;
+
+                                }
+
+                                loading('hide');
+
+                                $('#mps').html(meltingpoints);
+                                $('#mps').listview('refresh');
 
 
-            });
+
+                            } 
+                            else if (jsonObj == -1)
+                            {
+                                loading('hide');
+                                $('#mps').html("DB Connectivity Failed");
+                            } 
+                            else
+                            {
+                                loading('hide');
+                                $('#mps').html("No Game Found");
+                            }
+                        });
+
+
+
+                };
+
+                $(document).on("click", "#meltingp", function() 
+                {
+                    
+                    getMeltingPoint();
+                });
+
+                function showMPStory(post_id)
+                {
+                    loading('show');
+
+                    var div1, h2, p1, div2, div3, a1, img, div4, p2, p3, p4, p5, div5, p6, div6;
+
+                    $('#showDetails').html(' ');
+
+                    $.post("http://meterbreak.triapptech.com/WebServices/getMeltingPointStoryDetail.php",
+                        {
+                            id:post_id
+                        },
+
+                        function(data, status)
+                        {
+                            
+                            var jsonObj = data;
+                            
+                            var details = '';
+
+                            if (jsonObj.code == 0)
+                            {
+
+                                var mpDetails = jsonObj.response;
+
+                                div1 = '<div class="head">';
+
+                                h2 = '<h2>' + mpDetails[0].title + '</h2>';
+
+                                p1 = '<p class="c-name">posted by: ' + mpDetails[0].postAuthor + ' ' + mpDetails[0].postDate + '</p></div>';
+
+                                div2 = '<div class="main-news">';
+
+                                div3 = '<div class="big-news">';
+
+                                a1 = '<a href=""></a></div></div>';
+
+                                div4 = '<div class="info">';
+
+                                div5 = '</div><div class="detail">';
+
+                                p3 = '<p>' + mpDetails[0].content + '</p></div>';
+
+                                div6 = '<div class="ui-grid-b" data-theme="b"><div class="ui-block-a"><a href=""class="ui-btn ui-btn-b">FAQs</a></div><div class="ui-block-b"><a href=""class="ui-btn ui-btn-b">Videos</a></div><div class="ui-block-c"><a href=""class="ui-btn ui-btn-b">Picture</a></div></div>';
+
+                                details = div1 + h2 + p1 + div2 + div3 + a1  + div4 + div5 + p3 + div6;
+
+                                loading('hide');
+
+                                $('#showDetails').html(details);
+
+                                $('#showDetails').listview('refresh');
+
+
+
+                            } else if (jsonObj == -1)
+
+                            {
+
+                                loading('hide');
+
+                                $('#showDetails').html("DB Connectivity Failed");
+
+                            } else
+
+                            {
+
+                                loading('hide');
+
+                                $('#showDetails').html("No Game Details Found");
+
+                            }
+
+                        });
+
+                };
+
+                $(document).on("click", ".GetMP", function() {
+
+                    showMPStory($(this).attr("value"));
+
+                });
+
+                var catType = 'all';
+
+                function showSearchResults(category)
+                {
+
+                    loading('show');
+                    catType = category;
+                    $('#searchResults').html(' ');
+
+                    var ul, li, a, img, span1, h2, p1, p2, div, span2, thermometer, div_img, div_det;
+
+                    $.post("http://meterbreak.triapptech.com/WebServices/searchGames.php",
+                        {
+
+                            platform: category
+
+                        },
+                        function(data, status)
+                        {
+                            var jsonObj = data;
+
+                            var game = '';
+
+                            if (jsonObj.code == 0)
+                            {
+                                var gameData = jsonObj.response;
+
+                                for (var i = 1; i <= jsonObj.rowCount; i++)
+                                {
+
+                                    li = '<li data-icon="false">';
+
+                                    a = '<a class="GetPostID" id="TopGame' + parseInt(i) + '" href="#game-detail" value="' + gameData[i - 1].postID + '">';
+                                    
+                                    
+                                    img = '<div class="li-img"><img src="' + gameData[i - 1].img + '">';
+
+                                    span1 = '</div>';
+
+                                    h2 = '<div class="li-detail"><h2>&nbsp ' + gameData[i - 1].title + '</h2>';
+
+                                    p1 = '<p>&nbsp ' + gameData[i - 1].content + '...</p>';
+
+                                    p2 = '<p class="c-name"> &nbsp&nbsp' + gameData[i - 1].postDate + ' | ' + gameData[i - 1].postAuthor + '</p></div>';
+
+                                    var therm = parseInt(((gameData[i - 1].rating) / 10));
+
+                                    if (gameData[i - 1].rating >= 90)
+
+                                    {
+
+                                        div = '<div class="meter-full">';
+
+                                        thermometer = '<div class="thermometer"></div></div></a></li>';
+
+                                    } else
+
+                                    {
+
+                                        div = '<div class="meter">';
+
+                                        thermometer = '<div class="thermometer-' + therm + ' thermometer-main"></div>';
+
+                                    }
+
+                                    span2 = '<span class="ui-li-count">' + gameData[i - 1].rating + '</span>';
+
+
+
+                                    game = game + li + a + img + span1 + h2 + p1 + p2 + div + span2 + thermometer;
+
+                                }
+
+                                loading('hide');
+
+                                $('#searchResults').html(game);
+
+                                $('#searchResults').listview('refresh');
+
+
+
+                            } else if (jsonObj == -1)
+
+                            {
+
+                                loading('hide');
+
+                                $('#searchResults').html("DB Connectivity Failed");
+
+                            } else
+
+                            {
+
+                                loading('hide');
+
+                                $('#searchResults').html("No Game Found");
+
+                            }
+
+                        });
+
+
+
+                };
+
+                
+
+
+                 $(document).on("click", ".searchCategory", function() {
+
+                    showSearchResults($(this).attr("value"));
+
+                });
+
+
+                 function showSearchResultsByApha(alpha)
+                {
+
+                    loading('show');
+                    $('#searchResults').html(' ');
+
+                    var ul, li, a, img, span1, h2, p1, p2, div, span2, thermometer, div_img, div_det;
+
+                    $.post("http://meterbreak.triapptech.com/WebServices/searchGames.php",
+                        {
+
+                            platform: catType,
+                            alphabet: alpha
+
+                        },
+                        function(data, status)
+                        {
+                            var jsonObj = data;
+
+                            var game = '';
+
+                            if (jsonObj.code == 0)
+                            {
+                                var gameData = jsonObj.response;
+
+                                for (var i = 1; i <= jsonObj.rowCount; i++)
+                                {
+
+                                    li = '<li data-icon="false">';
+
+                                    a = '<a class="GetPostID" id="TopGame' + parseInt(i) + '" href="#game-detail" value="' + gameData[i - 1].postID + '">';
+                                    
+                                    
+                                    img = '<div class="li-img"><img src="' + gameData[i - 1].img + '">';
+
+                                    span1 = '</div>';
+
+                                    h2 = '<div class="li-detail"><h2>&nbsp ' + gameData[i - 1].title + '</h2>';
+
+                                    p1 = '<p>&nbsp ' + gameData[i - 1].content + '...</p>';
+
+                                    p2 = '<p class="c-name"> &nbsp&nbsp' + gameData[i - 1].postDate + ' | ' + gameData[i - 1].postAuthor + '</p></div>';
+
+                                    var therm = parseInt(((gameData[i - 1].rating) / 10));
+
+                                    if (gameData[i - 1].rating >= 90)
+
+                                    {
+
+                                        div = '<div class="meter-full">';
+
+                                        thermometer = '<div class="thermometer"></div></div></a></li>';
+
+                                    } else
+
+                                    {
+
+                                        div = '<div class="meter">';
+
+                                        thermometer = '<div class="thermometer-' + therm + ' thermometer-main"></div>';
+
+                                    }
+
+                                    span2 = '<span class="ui-li-count">' + gameData[i - 1].rating + '</span>';
+
+
+
+                                    game = game + li + a + img + span1 + h2 + p1 + p2 + div + span2 + thermometer;
+
+                                }
+
+                                loading('hide');
+
+                                $('#searchResults').html(game);
+
+                                $('#searchResults').listview('refresh');
+
+
+
+                            } 
+                            else if (jsonObj == -1)
+                            {
+                                loading('hide');
+                                $('#searchResults').html("DB Connectivity Failed");
+                            } 
+                            else
+                            {
+                                loading('hide');
+                                $('#searchResults').html("No Game Found");
+                            }
+
+                        });
+                };
+
+                $(document).on("click", ".searchCatAlpha", function() 
+                 {
+                    showSearchResultsByApha($(this).text());
+                });
+
+                $(document).on("click", "#search", function() 
+                 {
+                    showSearchResults('all');
+                });
+
+
+        });
+
 
 
 
@@ -722,13 +1151,35 @@
             
         </div><!-- /header -->
 
-        <div role="main" class="ui-content">
+        <div role="main" class="ui-content" >
 
+            <div class="container">
 
+                <h2 id="TopGamesHeading">Top 10 Games</h2>
 
+                <ul data-role="listview" data-inset="true" data-theme="b" class="top-10" id="mainTop10">
+                    <li data-icon="false">
+                      <a href="#game-detail">
+                        <div class="li-img">
+                          <img src="images/download1.jpg">
+                          <span class="discrip">1</span>
+                      </div>
+                      <div class="li-detail">
+                          <h2>Metal Gear Solid 5</h2>
+                          <p>Metal Gear Solid V: The Phantom Pain is a separated composite of two previously announced Kojima Productions projects, the both of which formed a complex deception.</p>
+                          <p class="c-name">May 1,2014 | Rahmet Hameed</p>
+                      </div>
+                      <div class="meter-full">
+                          <span class="ui-li-count">100</span>
+                          <div class="thermometer"></div>
+                      </div>
+                     </a>
+                    </li>    
+                </ul>
+            </div>
         </div>
         <!-- /content -->
-
+            
 
 
         <!-- <div data-role="panel" id="right-panel" data-display="push" data-position="right" data-theme="b">
@@ -1193,35 +1644,9 @@
 
                 <h2 style="border-bottom:1px solid red;padding-bottom:.83em;margin-bottom:0;">Melting Point</h2>
 
-                <ul data-role="listview" data-inset="true" data-theme="b" class="top-10">
+                <ul data-role="listview" data-inset="true" data-theme="b" class="top-10" id="mps">
 
-                    <li data-icon="false">
-
-                        <a href="#">
-
-                            <h2>Apperciateing the Classics</h2>
-
-                            <p>One of leading fighting games in world.</p>
-
-                            <p class="c-name">May 1,2014 | Rahmet Hameed</p>
-
-                        </a>
-
-                    </li>
-
-                    <li data-icon="false">
-
-                        <a href="#">
-
-                            <h2>Apperciateing the Classics</h2>
-
-                            <p>One of leading fighting games in world.Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-
-                            <p class="c-name">May 1,2014 | Rahmet Hameed</p>
-
-                        </a>
-
-                    </li>
+                    
 
                 </ul>
 
@@ -1393,13 +1818,7 @@
         </div>
         <!-- /content -->
 
-
-
     </div>
-
-
-
-
 
     <div data-role="page" id="game-detail" data-url="page">
 
@@ -1420,9 +1839,67 @@
 
     </div>
 
+<!-- ********************************************************** -->
+
+    <div data-role="page" id="search" data-url="search">
+      <div data-role="header">
+
+      </div><!-- /header -->
+      <div role="main" class="ui-content">
+       
+        <div class="select-platform"style="margin-top: 5px;border-bottom:1px solid red;">
+           <h2>Select Platform</h2>
+          <a href="" class="ui-btn ui-btn-inline searchCategory" value="all">All Platforms</a>
+          <a href="" class="ui-btn ui-btn-inline searchCategory" value="3ds">3DS</a>
+          <a href="" class="ui-btn ui-btn-inline searchCategory" value="android">Android</a>
+          <a href="" class="ui-btn ui-btn-inline searchCategory" value="ios">IOS</a>
+          <a href="" class="ui-btn ui-btn-inline searchCategory" value="windows">PC</a>
+          <a href="" class="ui-btn ui-btn-inline searchCategory" value="playstation-3">Playstation 3</a>
+          <a href="" class="ui-btn ui-btn-inline searchCategory" value="playstation-4">Playstation 4</a>
+          <a href="" class="ui-btn ui-btn-inline searchCategory" value="vita">Vita</a>
+          <a href="" class="ui-btn ui-btn-inline searchCategory" value="wiiu">WiiU</a>
+          <a href="" class="ui-btn ui-btn-inline searchCategory" value="xbox-360">Xbox 360</a>
+          <a href="" class="ui-btn ui-btn-inline searchCategory" value="xbox-one">xbox One</a>
+         
+        </div>
+        <div class="select-letter">
+           <h2>Select Letter</h2>
+          <a href="" class="ui-btn ui-btn-inline searchCatAlpha">A</a>
+          <a href="" class="ui-btn ui-btn-inline searchCatAlpha">B</a>
+          <a href="" class="ui-btn ui-btn-inline searchCatAlpha">C</a>
+          <a href="" class="ui-btn ui-btn-inline searchCatAlpha">D</a>
+          <a href="" class="ui-btn ui-btn-inline searchCatAlpha">E</a>
+          <a href="" class="ui-btn ui-btn-inline searchCatAlpha">F</a>
+          <a href="" class="ui-btn ui-btn-inline searchCatAlpha">G</a>
+          <a href="" class="ui-btn ui-btn-inline searchCatAlpha">H</a>
+          <a href="" class="ui-btn ui-btn-inline searchCatAlpha">I</a>
+          <a href="" class="ui-btn ui-btn-inline searchCatAlpha">J</a>
+          <a href="" class="ui-btn ui-btn-inline searchCatAlpha">K</a>
+          <a href="" class="ui-btn ui-btn-inline searchCatAlpha">L</a>
+          <a href="" class="ui-btn ui-btn-inline searchCatAlpha">M</a>
+          <a href="" class="ui-btn ui-btn-inline searchCatAlpha">N</a>
+          <a href="" class="ui-btn ui-btn-inline searchCatAlpha">O</a>
+          <a href="" class="ui-btn ui-btn-inline searchCatAlpha">P</a>
+          <a href="" class="ui-btn ui-btn-inline searchCatAlpha">Q</a>
+          <a href="" class="ui-btn ui-btn-inline searchCatAlpha">R</a>
+          <a href="" class="ui-btn ui-btn-inline searchCatAlpha">S</a>
+          <a href="" class="ui-btn ui-btn-inline searchCatAlpha">T</a>
+          <a href="" class="ui-btn ui-btn-inline searchCatAlpha">U</a>
+          <a href="" class="ui-btn ui-btn-inline searchCatAlpha">V</a>
+          <a href="" class="ui-btn ui-btn-inline searchCatAlpha">W</a>
+          <a href="" class="ui-btn ui-btn-inline searchCatAlpha">X</a>
+          <a href="" class="ui-btn ui-btn-inline searchCatAlpha">Y</a>
+          <a href="" class="ui-btn ui-btn-inline searchCatAlpha">Z</a>
+        </div>
+        <ul data-role="listview" data-inset="true" data-theme="b" class="top-10" id="searchResults">
+         
+      </ul>
+      </div><!-- /content -->
+
+    </div>
 
 
-
+<!-- ********************************************************** -->
 
     <div data-role="panel" id="left-panel" data-position="left" data-display="reveal" data-theme="b">
 
@@ -1452,7 +1929,7 @@
 
             <li>
 
-                <a href="#meltingpoint" class="ui-btn ui-btn-icon-right ui-icon-carat-r">Melting Point</a>
+                <a id="meltingp" href="#meltingpoint" class="ui-btn ui-btn-icon-right ui-icon-carat-r">Melting Point</a>
 
             </li>
 
@@ -1464,7 +1941,7 @@
 
             <li>
 
-                <a href="searchgame.html" class="ui-btn ui-btn-icon-right ui-icon-carat-r">Search for a game</a>
+                <a id="search" href="#search"class="ui-btn ui-btn-icon-right ui-icon-carat-r">Search for a game</a>
 
             </li>
 
@@ -1499,6 +1976,7 @@
             $("body>[data-role='panel']").panel();
             $( "[data-role='header']" ).toolbar();
         });
+
     </script>
 
 </body>
