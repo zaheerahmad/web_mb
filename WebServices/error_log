@@ -1,1 +1,4 @@
 [03-Sep-2014 09:32:23 UTC] PHP Fatal error:  Call to undefined function getDetailsOfGame() in /home/triapptech/public_html/meterbreak/WebServices/getDetailsOfGame.php on line 7
+[15-Sep-2014 10:16:01 UTC] PHP Fatal error:  Call to undefined function wp_hash_password() in /home/triapptech/public_html/meterbreak/WebServices/DBLayer.php on line 28
+[15-Sep-2014 11:57:29 UTC] PHP Fatal error:  Call to undefined function apply_filters() in /home/triapptech/public_html/meterbreak/WebServices/pluggable.php on line 1902
+[16-Sep-2014 13:31:16 UTC] PHP Fatal error:  Call to a member function diff() on a non-object in /home/triapptech/public_html/meterbreak/WebServices/DBLayer.php on line 851

@@ -1,8 +1,117 @@
 <?php
 include 'config.php';
+include 'pluggable.php';
 include 'response.php';
+
 header('Content-type: application/json');
 error_reporting(E_ERROR | E_PARSE);
+
+function Login($username, $password)
+{
+	$jsonResponse = new responsejson();
+    $config = new configuration();
+
+    $con = mysqli_connect($config->server, $config->user, $config->password, $config->db);
+
+    if (!$con) 
+    {	
+        $jsonResponse->code = -1;
+        $jsonResponse->status = "Error";
+        $jsonResponse->message = "Connection to db failed!";
+        return json_encode($jsonResponse);
+    }
+	
+		
+	$query="SELECT *
+			FROM wp_users
+			WHERE user_login='{$username}'";
+
+	
+	$result = mysqli_query($con,$query);
+	
+	if($result != null)
+        $resultCount = mysqli_num_rows($result);
+    if($resultCount > 0)
+    {
+			$row = mysqli_fetch_array($result);
+		
+			$check=wp_check_password($password,$row["user_pass"]);
+			
+			if($check)
+			{
+				$obj = new stdClass();
+				$obj->display_name = $row["display_name"];
+						
+				$jsonResponse->code = 0;
+				$jsonResponse->status = "Success";
+				$jsonResponse->message = "User Found!";
+				$jsonResponse->response = $obj;
+				
+				session_start();
+				session_name('Global');
+				$_SESSION['username'] = $username;
+				
+				return json_encode($jsonResponse);
+			}
+			else
+			{
+				 $jsonResponse->code = 1;
+				$jsonResponse->status = "Error";
+				$jsonResponse->message = "Invalid Username/Password";
+				return json_encode($jsonResponse);
+			}
+		
+			
+		
+    }
+    else
+    {
+        $jsonResponse->code = 1;
+        $jsonResponse->status = "Error";
+        $jsonResponse->message = "Invalid Username/Password";
+        return json_encode($jsonResponse);
+    }
+
+}
+
+function Register($username, $password,$email,$dob,$gender)
+{
+	$jsonResponse = new responsejson();
+    $config = new configuration();
+
+    $con = mysqli_connect($config->server, $config->user, $config->password, $config->db);
+
+    if (!$con) 
+    {	
+        $jsonResponse->code = -1;
+        $jsonResponse->status = "Error";
+        $jsonResponse->message = "Connection to db failed!";
+        return json_encode($jsonResponse);
+    }
+	
+	$nicename=strtolower($username);
+	$hashed=wp_hash_password ( $password );
+	
+	$query="INSERT INTO wp_users (user_login,user_pass,user_nicename,user_email,user_registered,user_status,display_name)
+			VALUES ('{$username}', '{$hashed}','{$nicename}','{$email}',NOW(),0,'{$username}')";
+			
+		$result = mysqli_query($con,$query);
+		
+		if($result)
+		{
+				$jsonResponse->code = 0;
+				$jsonResponse->status = "Success";
+				$jsonResponse->message = "User Registered Successfully!";
+				return json_encode($jsonResponse);
+		}
+		else
+		{
+			$jsonResponse->code = 1;
+			$jsonResponse->status = "Error";
+			$jsonResponse->message = "User Not Registered";
+			return json_encode($jsonResponse);
+		}
+}
 
 function getNews($platform)
 {
@@ -46,13 +155,14 @@ function getNews($platform)
                     $News->img=$row["guid"];
 
                     $News->content = str_replace("//www.","http://www.",$News->content);
+                    $News->content= strip_tags($News->content);
 					$News->content = preg_replace("/\[.*?\]/", "", $News->content);
 					$News->content=cleanString($News->content);
 					$News->content = utf8_encode($News->content);
                     $News->content=substr($News->content,0,50);
                     
                     $dateSrc = $row["post_date"];
-                    $dateTime = date_create( $dateSrc);;
+                    $dateTime = date_create( $dateSrc);
                     $News->postDate=date_format( $dateTime, 'F d,Y');
                     
                     array_push($jsonResponse->response,$News);
@@ -115,7 +225,7 @@ function getNews($platform)
                     $News->content=substr($News->content,0,50);
                     
                     $dateSrc = $row["post_date"];
-                    $dateTime = date_create( $dateSrc);;
+                    $dateTime = date_create( $dateSrc);
                     $News->postDate=date_format( $dateTime, 'F d,Y');
                     
                     array_push($jsonResponse->response,$News);
@@ -171,7 +281,7 @@ function getNews($platform)
                    $News->content=substr($News->content,0,50);
 				   
                    $dateSrc = $row["post_date"];
-                   $dateTime = date_create( $dateSrc);;
+                   $dateTime = date_create( $dateSrc);
                    $News->postDate=date_format( $dateTime, 'F d,Y');
                    array_push($jsonResponse->response,$News);
                }
@@ -253,7 +363,7 @@ function getTopTenGames($platform)
             $Game->content=substr($Game->content,0,50);
             
             $dateSrc = $row["post_date"];
-            $dateTime = date_create( $dateSrc);;
+            $dateTime = date_create( $dateSrc);
             $Game->postDate=date_format( $dateTime, 'F d,Y');
             
             array_push($jsonResponse->response,$Game);
@@ -317,7 +427,7 @@ function getDetailsOfGame($postID)
 			$Game->content = utf8_encode($Game->content);
             
             $dateSrc = $row["post_date"];
-            $dateTime = date_create( $dateSrc);;
+            $dateTime = date_create( $dateSrc);
             $Game->postDate=date_format( $dateTime, 'F d,Y');
 			
             $GameInformationData=$row["meta_value"];
@@ -381,17 +491,13 @@ function getDetailsOfNews($postID)
 		$News->postAuthor=$row["display_name"];
 		$News->img=$row["guid"];
 		
-//            $News->content = str_replace("\n","<br/>",$News->content);
-                //echo str_replace("\n","<br/>",$News->content);          
-//            $News->content=strip_tags($News->content);
-//            $News->content = htmlentities($News->content, UTF-8);
 
 			$News->content = str_replace("//www.","http://www.",$News->content);
 			$News->content = preg_replace("/\[.*?\]/", "", $News->content);
             $News->content=cleanString($News->content);
 			$News->content = utf8_encode($News->content);
             $dateSrc = $row["post_date"];
-            $dateTime = date_create( $dateSrc);;
+            $dateTime = date_create( $dateSrc);
             $News->postDate=date_format( $dateTime, 'F d,Y');
 			
 			
@@ -478,7 +584,7 @@ function getMeltingPointStories()
             $mpStory->content=substr($mpStory->content,0,50);
             
             $dateSrc = $row["post_date"];
-            $dateTime = date_create( $dateSrc);;
+            $dateTime = date_create( $dateSrc);
             $mpStory->postDate=date_format( $dateTime, 'F d,Y');
             
             array_push($jsonResponse->response,$mpStory);
@@ -537,7 +643,7 @@ function getMeltingPointStoryDetail($postID)
 			$mpStory->content = utf8_encode($mpStory->content);
 
             $dateSrc = $row["post_date"];
-            $dateTime = date_create( $dateSrc);;
+            $dateTime = date_create( $dateSrc);
             $mpStory->postDate=date_format( $dateTime, 'F d,Y');
             
         array_push($jsonResponse->response,$mpStory);
@@ -555,7 +661,7 @@ function getMeltingPointStoryDetail($postID)
 function searchGames($platform,$alphabet)
 {
 
-		$jsonResponse = new responsejson();
+	$jsonResponse = new responsejson();
     $config = new configuration();
     $con = mysqli_connect($config->server, $config->user, $config->password, $config->db);
     if (!$con) 
@@ -625,7 +731,7 @@ function searchGames($platform,$alphabet)
             $Game->content=substr($Game->content,0,50);
             
             $dateSrc = $row["post_date"];
-            $dateTime = date_create( $dateSrc);;
+            $dateTime = date_create( $dateSrc);
             $Game->postDate=date_format( $dateTime, 'F d,Y');
             
             array_push($jsonResponse->response,$Game);
@@ -640,6 +746,175 @@ function searchGames($platform,$alphabet)
         return json_encode($jsonResponse);
     }
 
+}
+
+function getForumCategories()
+{
+	$jsonResponse = new responsejson();
+    $config = new configuration();
+    $con = mysqli_connect($config->server, $config->user, $config->password, $config->db);
+    if (!$con) 
+    {
+        $jsonResponse->code = -1;
+        $jsonResponse->status = "Error";
+        $jsonResponse->message = "Connection to db failed!";
+        return json_encode($jsonResponse);
+    }
+	
+	$query="SELECT ID,post_title,post_content
+			FROM wp_posts
+			WHERE post_type='forum';";
+	
+	$result = mysqli_query($con,$query);
+    $resultCount = 0;
+    if($result != null)
+        $resultCount = mysqli_num_rows($result);
+    if($resultCount > 0)
+    {
+        $jsonResponse->code = 0;
+        $jsonResponse->status = "Success";
+        $jsonResponse->message = "{$resultCount} Categories found!";
+        $jsonResponse->rowCount=$resultCount;
+
+        while($row = mysqli_fetch_array($result))
+        {
+            $Forum = new stdClass();
+            $Forum->postID=$row["ID"];
+            $Forum->title=$row["post_title"];
+            $Forum->content=$row["post_content"];
+
+            $Forum->content = str_replace("//www.","http://www.",$Forum->content);
+			$Forum->content = preg_replace("/\[.*?\]/", "", $Forum->content);
+            $Forum->content=cleanString($Forum->content);
+			$Forum->content = utf8_encode($Forum->content);
+       
+            array_push($jsonResponse->response,$Forum);
+        }
+        return json_encode($jsonResponse);
+    }
+    else
+    {
+        $jsonResponse->code = 1;
+        $jsonResponse->status = "Error";
+        $jsonResponse->message = "No Categories found!";
+        return json_encode($jsonResponse);
+    }
+}
+
+function getForumTopics($postID)
+{
+		$jsonResponse = new responsejson();
+		$config = new configuration();
+		$con = mysqli_connect($config->server, $config->user, $config->password, $config->db);
+		if (!$con) 
+		{
+			$jsonResponse->code = -1;
+			$jsonResponse->status = "Error";
+			$jsonResponse->message = "Connection to db failed!";
+			return json_encode($jsonResponse);
+		}
+		
+		
+		$query="SELECT p.ID,p.post_title, pm.meta_value as comment_count , pm2.meta_value as last_active_time
+				FROM wp_posts p , wp_postmeta pm, wp_postmeta pm2
+				WHERE post_type = 'topic'
+				AND post_parent = {$postID}
+				AND pm.post_id = p.ID
+				AND pm2.post_id = p.ID
+				AND pm.meta_key = '_bbp_reply_count'
+				AND pm2.meta_key = '_bbp_last_active_time'
+				GROUP BY p.post_title
+				ORDER BY last_active_time DESC;";
+	
+			$result = mysqli_query($con,$query);
+			$resultCount = 0;
+			if($result != null)
+				$resultCount = mysqli_num_rows($result);
+    if($resultCount > 0)
+    {
+        $jsonResponse->code = 0;
+        $jsonResponse->status = "Success";
+        $jsonResponse->message = "{$resultCount} Topic(s) found!";
+        $jsonResponse->rowCount=$resultCount;
+
+        while($row = mysqli_fetch_array($result))
+        {
+            $Topic = new stdClass();
+            $Topic->postID=$row["ID"];
+            $Topic->title=$row["post_title"];
+			$Topic->comment_count=$row["comment_count"];
+			
+			$dateSrc = $row["last_active_time"];
+			
+			$retrieveDate = new DateTime($dateSrc);
+			$currDate=new DateTime(date("Y-m-d H:i:s"));
+			
+			//$diff = $currDate->getTimestamp() - $retrieveDate->getTimestamp();
+			
+			$interval = $retrieveDate->diff($currDate);
+			
+			$timeString='';
+			
+			/*if($interval->y !== 0 ) 
+			{	
+				$timeString=$timeString.' ' .$interval->y.' years';
+			}
+			if($interval->m !== 0 )  
+			{
+				$timeString = ' ' . $timeString $interval->m.' months';
+			}
+			if($timeString == '' )
+			{
+				if($interval->d !== 0 )  $timeString = ' ' . $timeString $interval->d.' days';
+			}
+			
+			if($timeString == '' )
+			{
+				if($interval->h !== 0 ) 
+				{
+					$timeString=$timeString.' '.$interval->h.' hours';
+				}
+				if($interval->i !== 0 ) 
+				{				
+					$timeString = ' ' . $timeString $interval->i.' minutes';
+				}
+			}
+			
+			if($timeString == '' )
+			{
+				if($interval->s !== 0 ) 
+				{
+					$timeString = ' ' . $timeString $interval->s.' secs';
+				}
+			}
+			
+			*/
+			
+			echo $interval->y ." years ".$interval->m." months ".$interval->d." days"; 
+
+			$Topic->last_active_time= $timeString;
+			
+		/*	$dateSrc = $row["last_active_time"];
+            $dateTime = date_create( $dateSrc);
+			$currTime=date("Y-m-d H:i:s");
+			
+			$interval = date_diff($currTime,$dateTime);
+			
+			$Topic->last_active_time=$interval;*/
+		       
+            array_push($jsonResponse->response,$Topic);
+        }
+        return json_encode($jsonResponse);
+    }
+    else
+    {
+        $jsonResponse->code = 1;
+        $jsonResponse->status = "Error";
+        $jsonResponse->message = "No Topic found!";
+        return json_encode($jsonResponse);
+    }
+		
+		
 }
 
 function cleanString($inputString)

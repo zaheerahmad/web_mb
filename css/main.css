@@ -30,7 +30,10 @@
 body{
 	/*height: 1200px !important;*/
 }
-
+a{
+	text-decoration: none;
+	color: #000;
+}
 .ui-overlay-a, .ui-page-theme-a, .ui-page-theme-a .ui-panel-wrapper {
 	/*background-color: #F4BB51;*/
 	background-image: url("../images/cross.jpg");
@@ -516,6 +519,7 @@ width: 112px;
 .select-platform h2,.select-letter h2{
 	color: #fff !important;
 	margin: 0;
+	text-shadow: none !important;
 }
 .select-platform a,.select-letter a,.red{
 	padding: 6px 8px;
@@ -529,6 +533,7 @@ width: auto;
 color: #FFF !important;
 border-radius: 4px;
 text-decoration: none;
+text-shadow: none !important;
 -moz-transition: all .25s ease-in;
 -webkit-transition: all .25s ease-in;
 -o-transition: all .25s ease-in;
@@ -547,6 +552,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d2172a', end
 .select-platform a:hover,.select-letter a:hover{
 	border: 2px solid #FFF !important;
 }
+
 .dailypoll-main{
 	background-color: #333;
 	color: #fff;
@@ -570,4 +576,20 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d2172a', end
 }
 #dailypoll h4,#dailypoll label{
 	text-shadow:none;
+}
+.black{
+	color: #000 !important;
+}
+a.black:hover{
+	text-decoration: underline;
+}
+.big{
+	font-size: 1.7em;
+}
+tr
+{
+border-bottom: 1px solid lightgray;
+}
+.margin-right{
+	margin-right: 0 !important;
 }
