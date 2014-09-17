@@ -6,6 +6,8 @@
  * @package WordPress
  */
 
+ include 'plugin.php';
+ 
 if ( !function_exists('wp_set_current_user') ) :
 /**
  * Changes the current user by ID or name.
@@ -1833,7 +1835,7 @@ function wp_hash_password($password) {
 	global $wp_hasher;
 
 	if ( empty($wp_hasher) ) {
-		require_once( 'class-phpass.php');
+		require_once('class-phpass.php');
 		// By default, use the portable hash from phpass
 		$wp_hasher = new PasswordHash(8, true);
 	}
@@ -1866,8 +1868,7 @@ if ( !function_exists('wp_check_password') ) :
  */
 function wp_check_password($password, $hash, $user_id = '') {
 	global $wp_hasher;
-	
-		require_once('plugin.php');
+
 	// If the hash is still md5...
 	if ( strlen($hash) <= 32 ) {
 		$check = ( $hash == md5($password) );
@@ -1892,7 +1893,7 @@ function wp_check_password($password, $hash, $user_id = '') {
 	// If the stored hash is longer than an MD5, presume the
 	// new style phpass portable hash.
 	if ( empty($wp_hasher) ) {
-		require_once( 'class-phpass.php');
+		require_once('class-phpass.php');
 		// By default, use the portable hash from phpass
 		$wp_hasher = new PasswordHash(8, true);
 	}

@@ -63,6 +63,7 @@
         .ui-loader {
             z-index: 1501;
         }*/
+        #regErrors, #loginErrors{ color:red;}
         #demo-page:not(INPUT):not(TEXTAREA) {
             -webkit-user-select: none;
             -moz-user-select: none;
@@ -597,71 +598,112 @@
 
         </div>
         <!-- /content -->
-
-
-
     </div>
 
-
-
-
-
     <div data-role="page" id="forums" data-url="page">
-
         <div data-role="header">
-
         </div><!-- /header -->
-
         <div role="main" class="ui-content">
-
             <div class="container">
-
                 <form role="form" method="post">
-
                     <div class="ui-grid-b head">
-
                         <div class="ui-block-a" style="width: 30%;">
-
                             <h2 style="margin-top: .5em;">Forums</h2>
-
                         </div>
-
                         <div class="ui-block-b" style="width: 50%;">
-
                             <input type="text">
-
                         </div>
-
                         <div class="ui-block-c" style="width: 20%;">
-
                             <button type="submit" class="search">Search</button>
-
                         </div>
-
                     </div>
-
                 </form>
-
                 <ul data-role="listview" data-inset="true" data-theme="b" class="" id="forumsList">
-
                     <li data-icon="false">
-
                         <a href="#">
-
                             <h2>3DS</h2>
-
                         </a>
-
                     </li>
-
                 </ul>
-
             </div>
 
         </div>
         <!-- /content -->
-
     </div>
+
+    <div data-role="page" id="fourm-topic" data-url="fourm-topic">
+    <div data-role="header">
+
+    </div><!-- /header -->
+    <div role="main" class="ui-content">
+          <div class="head">
+       <h2 id="ForumHeading">Playstation 4</h2>  
+      </div>
+      <div class="row">
+        <table data-role="table" class="ui-responsive ui-shadow">
+          <thead>
+            <tr>
+              <th>Topic</th>
+              <th>Posts</th>
+              <th>Last Post</th>
+            </tr>
+          </thead>
+          <tbody id="topics">
+            <tr>
+              <td><a href="">Strider is cool!</a></td>
+              <td>1</td>
+              <td><a href="">5 monthes,1 week ago</a></td>
+            </tr>
+            
+          </tbody>
+
+        </table>
+      </div>
+      <div class="row">
+        <h4>Creat new topic in "Playstation"</h4>
+        <label for="topic-title">Topic Title</label>
+        <input type="text"id="topic-title"name="topic-title">
+        <textarea name="" id="" rows="10"></textarea>
+        <a href="" class="ui-btn ui-btn-inline red">Save</a>
+      </div>
+    </div><!-- /content -->
+
+  </div>
+
+    <div data-role="page" id="fourm-storie" data-url="fourm-storie">
+    <div data-role="header">
+
+    </div><!-- /header -->
+    <div role="main" class="ui-content">
+          <div class="head">
+      <h2 id="TopicHeading">Topic Content</h2>  
+      </div>
+      <div class="row">
+        <ul data-role="listview" data-inset="true" data-theme="b" class="top-10" id="forum-posts">
+          <li data-icon="false">
+            <a href="#">
+              <img src="images/download1.jpg">
+              <h2>Travis Timmons</h2>
+              <p>Metal Gear Solid V: The Phantom Pain is a separated composite of two previously announced Kojima Productions projects, the both of which formed a complex deception.</p>
+              <p class="c-name">May 1,2014 at 5:33pm</p>
+              <div class="meter-full">
+                <span class="ui-li-count margin-right">#1212</span>
+              </div>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div class="row">
+        <h4>Reply to:Travis</h4>
+        <input type="text">
+        <a href="" class="ui-btn-inline ui-btn red">Reply</a>
+      </div>
+    </div><!-- /content -->
+
+  </div>
+
+
+
 
     <div data-role="page" id="game-detail" data-url="page">
 
@@ -742,6 +784,99 @@
     </div>
 
 
+    <div data-role="page" id="sign-reg" data-url="sign-reg">
+      <div data-role="header">
+
+      </div><!-- /header -->
+      <div role="main" class="ui-content">
+        <p style="text-align: center;">
+          <a id="login" href="#sign-in"class="red ui-btn ui-btn-inline" style="margin-left: 1em;">SignIn</a>
+          <a href="#register" class="red ui-btn ui-btn-inline" style="margin-left: 1em;">Register</a>
+        </p>
+        <h3>WHAT IS METERBREAK?</h3>
+        <p>Reviews can be a great thing, but sometimes reviewers can get in the way of a good review.</p>
+        <p>1. Their scores are based on their own preferences.</p>
+        <p>2. They might have a bias.</p>
+        <p>3. You may love a game they don't.</p>
+        <p>This site helps you sort through the reviews and find the perfect games for you. The bias is removed as we give you personalized scores for every game on the site based on your feedback.</p>
+        <p class="big">Do you want to know your top 10? SignUp now and find out!</p>
+      </div><!-- /content -->
+
+    </div>
+
+    <div data-role="page" id="register" >
+    <div data-role="header">
+
+    </div><!-- /header -->
+    <div role="main" class="ui-content">
+      <h2>User Registration</h2>
+      <form id="registerationForm" method="post" action="javascript:void(0);">
+        <label for="u-name">Username</label>
+        <input type="text" name="u-name" id="u-name">
+        <label for="password">Password</label>
+        <input type="password" name="password" id="password">
+        <label for="r-password">Re-type Password</label>
+        <input type="password" name="r-password" id="r-password">
+        <label for="email">Email</label>
+        <input type="email" name="email" id="email" placeholder="example@somewhere.com">
+        <fieldset data-role="controlgroup" data-type="horizontal">
+          <legend>Gender</legend>
+          <label for="male">Male</label>
+          <input type="radio" name="gender" id="male" value="m" checked>
+          <label for="female">Female</label>
+          <input type="radio" name="gender" id="female" value="f"> 
+        </fieldset>
+        <label for="date">Date of Birth</label>
+        <input type="date" data-role="date"id="date">
+        <label for="captcha"><span id="num1"> 8 </span> + <span id="num2"> 2 </span> = ? </label>
+        <input type="text"id="captcha"name="captcha">
+        <p>By registering a new account, you indicate that you have read and understood our <a href="">Privacy Policy</a> and <a href="">Terms of Use</a>. Until you validate your account with the email we send to the address you provided, you will not be able to use your account.</p>
+        <div id="regErrors"></div>
+        <button class="red ui-btn ui-btn-inline" id="signMeUp">Sign Up</button>
+      </div>
+    </div><!-- /content -->
+
+  </div>
+
+    <div data-role="page" id="sign-in" >
+    <div data-role="header">
+
+    </div><!-- /header -->
+    <div role="main" class="ui-content" id="signInForm">
+    <h2>Sign In</h2>
+    <form method="post" action="javascript:void(0);" id="signInn">
+      <label for="u-name">Username</label>
+      <input type="text" name="u-name" id="uName">
+      <label for="password">Password</label>
+      <input type="password" name="password" id="pass">
+      <div id="loginErrors"></div>
+      <button id="signMeIn" class="red ui-btn ui-btn-inline">Sign In</button>
+    </form>
+    
+    </div><!-- /content -->
+
+  </div>
+
+  <div data-role="page" id="thankyou" data-url="thankyou">
+    <div data-role="header">
+
+    </div><!-- /header -->
+    <div role="main" class="ui-content">
+      <div class="head">
+      <h2>THANK YOU</h2>  
+      </div>
+      <p>Thankyou for creating an account on Meterbreak.</p>
+      <p>Please check the verification link in your email to activate your account.</p>
+      <p>-Check your email inbox</p>
+      <p>-Click the verification link in the email</p>
+      <p>-If you can't find the email,check your spam folder</p>
+      <p>If the email is not in your spam folder,press here to <a href="">resend the email</a></p>
+    </div><!-- /content -->
+
+  </div>
+
+
+
 <!-- ********************************************************** -->
 
     <div data-role="panel" id="left-panel" data-position="left" data-display="reveal" data-theme="b">
@@ -750,65 +885,75 @@
 
         <ul data-role="listview" class="ui-listview">
 
+        <li>
+            <a href="#"class="ui-btn user-pic-name">
+                <img src="images/download.jpg" alt="" class="ui-li-icon"> Travis Timmons
+            </a>
+        </li>
+
+        <li class="ui-first-child">
+
+            <a href="#sign-reg" class="ui-btn ui-btn-icon-right ui-icon-carat-r">SignIn / Register</a>
+
+        </li>
+
+        <li>
+
+            <a href="#platforms" class="ui-btn ui-btn-icon-right ui-icon-carat-r">Platforms</a>
+
+        </li>
+
+        <li>
+
+            <a href="250games.html" class="ui-btn ui-btn-icon-right ui-icon-carat-r">Top 250 Games</a>
+
+        </li>
+
+        <li>
+
+            <a id="showForums" href="#forums" class="ui-btn ui-btn-icon-right ui-icon-carat-r">Forums</a>
+
+        </li>
+
+        <li>
+
+            <a id="meltingp" href="#meltingpoint" class="ui-btn ui-btn-icon-right ui-icon-carat-r">Melting Point</a>
+
+        </li>
+
+        <li>
+
+            <a href="staff.html" class="ui-btn ui-btn-icon-right ui-icon-carat-r">Staff</a>
+
+        </li>
+
+        <li>
+
+            <a  id="searchAll" href="#search"class="ui-btn ui-btn-icon-right ui-icon-carat-r">Search for a game</a>
+
+        </li>
+
+        <li>
+
+            <a href="help.html" class="ui-btn ui-btn-icon-right ui-icon-carat-r">Help</a>
+
+        </li>
+
+        <li>
+
+            <a href="dailypoll.html" class="ui-btn ui-btn-icon-right ui-icon-carat-r">Daily Poll</a>
+
+        </li>
+
+        <li>
+
+            <a href="Profile" class="ui-btn ui-btn-icon-right ui-icon-carat-r">Profile toolbars</a>
+
+        </li>
 
 
-            <li class="ui-first-child">
 
-                <a href="#platforms" class="ui-btn ui-btn-icon-right ui-icon-carat-r">Platforms</a>
-
-            </li>
-
-            <li>
-
-                <a href="250games.html" class="ui-btn ui-btn-icon-right ui-icon-carat-r">Top 250 Games</a>
-
-            </li>
-
-            <li>
-
-                <a id="showForums" href="#forums" class="ui-btn ui-btn-icon-right ui-icon-carat-r">Forums</a>
-
-            </li>
-
-            <li>
-
-                <a id="meltingp" href="#meltingpoint" class="ui-btn ui-btn-icon-right ui-icon-carat-r">Melting Point</a>
-
-            </li>
-
-            <li>
-
-                <a href="staff.html" class="ui-btn ui-btn-icon-right ui-icon-carat-r">Staff</a>
-
-            </li>
-
-            <li>
-
-                <a  id="searchAll" href="#search"class="ui-btn ui-btn-icon-right ui-icon-carat-r">Search for a game</a>
-
-            </li>
-
-            <li>
-
-                <a href="help.html" class="ui-btn ui-btn-icon-right ui-icon-carat-r">Help</a>
-
-            </li>
-
-            <li>
-
-                <a href="dailypoll.html" class="ui-btn ui-btn-icon-right ui-icon-carat-r">Daily Poll</a>
-
-            </li>
-
-            <li>
-
-                <a href="Profile" class="ui-btn ui-btn-icon-right ui-icon-carat-r">Profile toolbars</a>
-
-            </li>
-
-
-
-        </ul>
+    </ul>
 
     </div>
     <!-- /leftpanel1 -->

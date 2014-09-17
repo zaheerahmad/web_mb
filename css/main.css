@@ -593,3 +593,8 @@ border-bottom: 1px solid lightgray;
 .margin-right{
 	margin-right: 0 !important;
 }
+.user-pic-name img{
+	width: 3em;
+	margin-right: 1em;
+	vertical-align: bottom;
+}

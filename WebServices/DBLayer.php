@@ -1,7 +1,8 @@
 <?php
 include 'config.php';
-include 'pluggable.php';
 include 'response.php';
+include 'pluggable.php';
+
 
 header('Content-type: application/json');
 error_reporting(E_ERROR | E_PARSE);
@@ -36,12 +37,41 @@ function Login($username, $password)
 			$row = mysqli_fetch_array($result);
 		
 			$check=wp_check_password($password,$row["user_pass"]);
-			
 			if($check)
 			{
 				$obj = new stdClass();
 				$obj->display_name = $row["display_name"];
+				
+				$query2="SELECT  um.meta_value as img
+						FROM  wp_usermeta um
+						WHERE um.user_id={$row["ID"]}
+						AND um.meta_key='profile_image'";
+				
+				$result2 = mysqli_query($con,$query2);
+	
+				if($result2 != null)
+				{
+					$resultCount2 = mysqli_num_rows($result2);
+					
+					if($resultCount2 > 0)
+					{
+							$row2 = mysqli_fetch_array($result2);
 						
+						$ImgURL=$row2["img"];
+						$ImgURL=unserialize($ImgURL);
+            
+						$obj->img= $ImgURL['url'];
+					}
+					else
+					{
+						$obj->img="images/profile.gif";
+					}
+				}
+				else
+				{
+					$obj->img="images/profile.gif";
+				}
+				
 				$jsonResponse->code = 0;
 				$jsonResponse->status = "Success";
 				$jsonResponse->message = "User Found!";
@@ -90,7 +120,7 @@ function Register($username, $password,$email,$dob,$gender)
     }
 	
 	$nicename=strtolower($username);
-	$hashed=wp_hash_password ( $password );
+	$hashed=wp_hash_password( $password );
 	
 	$query="INSERT INTO wp_users (user_login,user_pass,user_nicename,user_email,user_registered,user_status,display_name)
 			VALUES ('{$username}', '{$hashed}','{$nicename}','{$email}',NOW(),0,'{$username}')";
@@ -99,6 +129,14 @@ function Register($username, $password,$email,$dob,$gender)
 		
 		if($result)
 		{
+				/*$key = wp_generate_password( 20, false );
+				$wp_hasher = new PasswordHash( 8, true );
+				$hashedKey = $wp_hasher->HashPassword( $key );
+				
+				$obj = new stdClass();
+				$obj->key=$hashedKey;
+				$jsonResponse->response = $obj;*/
+		
 				$jsonResponse->code = 0;
 				$jsonResponse->status = "Success";
 				$jsonResponse->message = "User Registered Successfully!";
@@ -842,65 +880,17 @@ function getForumTopics($postID)
             $Topic = new stdClass();
             $Topic->postID=$row["ID"];
             $Topic->title=$row["post_title"];
-			$Topic->comment_count=$row["comment_count"];
+			$Topic->comment_count=(int)$row["comment_count"];
+			$Topic->comment_count=$Topic->comment_count+1;
 			
 			$dateSrc = $row["last_active_time"];
 			
 			$retrieveDate = new DateTime($dateSrc);
 			$currDate=new DateTime(date("Y-m-d H:i:s"));
 			
-			//$diff = $currDate->getTimestamp() - $retrieveDate->getTimestamp();
-			
 			$interval = $retrieveDate->diff($currDate);
 			
-			$timeString='';
-			
-			/*if($interval->y !== 0 ) 
-			{	
-				$timeString=$timeString.' ' .$interval->y.' years';
-			}
-			if($interval->m !== 0 )  
-			{
-				$timeString = ' ' . $timeString $interval->m.' months';
-			}
-			if($timeString == '' )
-			{
-				if($interval->d !== 0 )  $timeString = ' ' . $timeString $interval->d.' days';
-			}
-			
-			if($timeString == '' )
-			{
-				if($interval->h !== 0 ) 
-				{
-					$timeString=$timeString.' '.$interval->h.' hours';
-				}
-				if($interval->i !== 0 ) 
-				{				
-					$timeString = ' ' . $timeString $interval->i.' minutes';
-				}
-			}
-			
-			if($timeString == '' )
-			{
-				if($interval->s !== 0 ) 
-				{
-					$timeString = ' ' . $timeString $interval->s.' secs';
-				}
-			}
-			
-			*/
-			
-			echo $interval->y ." years ".$interval->m." months ".$interval->d." days"; 
-
-			$Topic->last_active_time= $timeString;
-			
-		/*	$dateSrc = $row["last_active_time"];
-            $dateTime = date_create( $dateSrc);
-			$currTime=date("Y-m-d H:i:s");
-			
-			$interval = date_diff($currTime,$dateTime);
-			
-			$Topic->last_active_time=$interval;*/
+			$Topic->last_active_time= timeFormat($interval);
 		       
             array_push($jsonResponse->response,$Topic);
         }
@@ -915,6 +905,142 @@ function getForumTopics($postID)
     }
 		
 		
+}
+
+function getTopicReplies($postID)
+{
+		$jsonResponse = new responsejson();
+		$config = new configuration();
+		$con = mysqli_connect($config->server, $config->user, $config->password, $config->db);
+		if (!$con) 
+		{
+			$jsonResponse->code = -1;
+			$jsonResponse->status = "Error";
+			$jsonResponse->message = "Connection to db failed!";
+			return json_encode($jsonResponse);
+		}
+		
+		$query="SELECT  p.ID ,p.post_author, p.post_date , p.post_content,u.display_name
+				FROM wp_posts p ,wp_posts p2 , wp_users u 
+				WHERE( p.ID={$postID} OR p.post_parent={$postID})
+				AND p.post_author=u.ID
+				GROUP BY p.ID
+				ORDER BY p.menu_order;";
+				
+			$result = mysqli_query($con,$query);
+			$resultCount = 0;
+			if($result != null)
+				$resultCount = mysqli_num_rows($result);
+    if($resultCount > 0)
+    {
+        $jsonResponse->code = 0;
+        $jsonResponse->status = "Success";
+        $jsonResponse->message = "{$resultCount} Replies found!";
+        $jsonResponse->rowCount=$resultCount;
+
+        while($row = mysqli_fetch_array($result))
+        {
+            $Topic = new stdClass();
+            $Topic->postID=$row["ID"];
+			$Topic->display_name=$row["display_name"];
+			$Topic->content=$row["post_content"];
+			
+            $Topic->content = str_replace("//www.","http://www.",$Topic->content);
+			$Topic->content = preg_replace("/\[.*?\]/", "", $Topic->content);
+            $Topic->content=cleanString($Topic->content);
+			$Topic->content = utf8_encode($Topic->content);
+			
+			$dateSrc = $row["post_date"];
+            $dateTime = date_create( $dateSrc);
+            $Topic->postDate=date_format( $dateTime, 'F d,Y \a\t h:i a');
+			
+			
+			$query2="SELECT meta_value as img
+					FROM wp_usermeta
+					WHERE user_id={$row["post_author"]}
+					AND meta_key='profile_image';";
+				
+				$result2 = mysqli_query($con,$query2);
+	
+				if($result2 != null)
+				{
+					$resultCount2 = mysqli_num_rows($result2);
+					
+					if($resultCount2 > 0)
+					{
+							$row2 = mysqli_fetch_array($result2);
+						
+						$ImgURL=$row2["img"];
+						$ImgURL=unserialize($ImgURL);
+            
+						$Topic->img= $ImgURL['url'];
+					}
+					else
+					{
+						$Topic->img="images/profile.gif";
+					}
+				}
+				else
+				{
+					$Topic->img="images/profile.gif";
+				}
+	
+            array_push($jsonResponse->response,$Topic);
+        }
+        return json_encode($jsonResponse);
+    }
+    else
+    {
+        $jsonResponse->code = 1;
+        $jsonResponse->status = "Error";
+        $jsonResponse->message = "No Reply found!";
+        return json_encode($jsonResponse);
+    }
+		
+}
+function timeFormat($interval)
+{
+	$timeString='';
+			
+			if($interval->y != '0' ) 
+			{	
+				$timeString=$timeString.' ' .$interval->y.' years ';
+			}
+			
+			if($interval->m != '0' )  
+			{
+				$timeString =  $timeString .$interval->m.' months ';
+			}
+			
+			if($interval->y == '0' && $interval->m != '0' )
+			{
+				if($interval->d != 0 )  $timeString =  $timeString .$interval->d.' days ';
+			}
+			
+			
+			if($timeString == '' )
+			{
+				if($interval->h != '0' ) 
+				{
+					$timeString=$timeString.' ' .$interval->h.' hours ';
+				}
+				if($interval->i != '0' ) 
+				{				
+					$timeString =  $timeString .$interval->i.' minutes ';
+				}
+			}
+			
+			if($timeString == '' )
+			{
+				if($interval->s != '0' ) 
+				{
+					$timeString =  $timeString . $interval->s.' secs';
+				}
+			}
+			
+			$timeString=$timeString.'ago';
+			
+			return $timeString;
 }
 
 function cleanString($inputString)

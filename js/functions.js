@@ -87,118 +87,61 @@ $(document).ready(function()
 
         function getTopTenGames(category, type)
         {
-
             loading('show');
-
             $('#TopGamesHeading').html('Top 10 ' + type + ' Games');
-
             $('#top10Games').html(' ');
-
             var ul, li, a, img, span1, h2, p1, p2, div, span2, thermometer, div_img, div_det;
-
             $.post("http://meterbreak.triapptech.com/WebServices/getTopTenGames.php",
-
+            {
+                platform: category
+            },
+            function(data, status)
+            {
+                var jsonObj = data;
+                var game = '';
+                if (jsonObj.code == 0)
                 {
-
-                    platform: category
-
-                },
-
-                function(data, status)
-
-                {
-
-
-
-                    var jsonObj = data;
-
-                    var game = '';
-
-                    if (jsonObj.code == 0)
-
+                    var gameData = jsonObj.response;
+                    for (var i = 1; i <= jsonObj.rowCount; i++)
                     {
-
-                        var gameData = jsonObj.response;
-
-
-
-                        for (var i = 1; i <= jsonObj.rowCount; i++)
-
+                        li = '<li data-icon="false">';
+                        a = '<a class="GetPostID" id="TopGame' + parseInt(i) + '" href="#game-detail" value="' + gameData[i - 1].postID + '">'; 
+                        
+                        img = '<div class="li-img"><img src="' + gameData[i - 1].img + '">';
+                        span1 = '<span class="discrip">' + i + '</span></div>';
+                        h2 = '<div class="li-detail"><h2>&nbsp ' + gameData[i - 1].title + '</h2>';
+                        p1 = '<p>&nbsp ' + gameData[i - 1].content + '...</p>';
+                        p2 = '<p class="c-name"> &nbsp&nbsp' + gameData[i - 1].postDate + ' | ' + gameData[i - 1].postAuthor + '</p></div>';
+                        var therm = parseInt(((gameData[i - 1].rating) / 10));
+                        if (gameData[i - 1].rating >= 90)
                         {
-
-                            li = '<li data-icon="false">';
-
-                            a = '<a class="GetPostID" id="TopGame' + parseInt(i) + '" href="#game-detail" value="' + gameData[i - 1].postID + '">';
-                            
-                            //div_img = '';
-                            
-                            img = '<div class="li-img"><img src="' + gameData[i - 1].img + '">';
-
-                            span1 = '<span class="discrip">' + i + '</span></div>';
-
-                            h2 = '<div class="li-detail"><h2>&nbsp ' + gameData[i - 1].title + '</h2>';
-
-                            p1 = '<p>&nbsp ' + gameData[i - 1].content + '...</p>';
-
-                            p2 = '<p class="c-name"> &nbsp&nbsp' + gameData[i - 1].postDate + ' | ' + gameData[i - 1].postAuthor + '</p></div>';
-
-                            var therm = parseInt(((gameData[i - 1].rating) / 10));
-
-                            if (gameData[i - 1].rating >= 90)
-
-                            {
-
-                                div = '<div class="meter-full">';
-
-                                thermometer = '<div class="thermometer"></div></div></a></li>';
-
-                            } else
-
-                            {
-
-                                div = '<div class="meter">';
-
-                                thermometer = '<div class="thermometer-' + therm + ' thermometer-main"></div>';
-
-                            }
-
-                            span2 = '<span class="ui-li-count">' + gameData[i - 1].rating + '</span>';
-
-
-
-                            game = game + li + a + img + span1 + h2 + p1 + p2 + div + span2 + thermometer;
-
+                            div = '<div class="meter-full">';
+                            thermometer = '<div class="thermometer"></div></div></a></li>';
+                        } 
+                        else
+                        {
+                            div = '<div class="meter">';
+                            thermometer = '<div class="thermometer-' + therm + ' thermometer-main"></div>';
                         }
+                        span2 = '<span class="ui-li-count">' + gameData[i - 1].rating + '</span>';
 
-                        loading('hide');
-
-                        $('#top10Games').html(game);
-
-                        $('#top10Games').listview('refresh');
-
-
-
-                    } else if (jsonObj == -1)
-
-                    {
-
-                        loading('hide');
-
-                        $('#top10Games').html("DB Connectivity Failed");
-
-                    } else
-
-                    {
-
-                        loading('hide');
-
-                        $('#top10Games').html("No Game Found");
-
+                        game = game + li + a + img + span1 + h2 + p1 + p2 + div + span2 + thermometer;
                     }
-
-                });
-
-
+                    loading('hide');
+                    $('#top10Games').html(game);
+                    $('#top10Games').listview('refresh');
+                } 
+                else if (jsonObj == -1)
+                {
+                    loading('hide');
+                    $('#top10Games').html("DB Connectivity Failed");
+                } 
+                else
+                {
+                    loading('hide');
+                    $('#top10Games').html("No Game Found");
+                }
+            });
 
         };
 
@@ -1066,7 +1009,7 @@ $(document).ready(function()
                         for (var i = 0; i < jsonObj.rowCount; i++)
                         {
                             li  = '<li data-icon="false">';
-                            a = '<a class="GetForumID" href="#" value="' + forumData[i].postID + '">';
+                            a = '<a class="GetForumID" id="' + forumData[i].title + '" href="#fourm-topic" value="' + forumData[i].postID + '">';
                             h2  = '<h2>' + forumData[i].title + '</h2></a></li>';
                             
                             forum = forum + li + a + h2;
@@ -1098,4 +1041,257 @@ $(document).ready(function()
             showForums();
         });
 
+        function showForumTopics(forumId, name)
+        {
+            loading('show');
+            $('#ForumHeading').html(name);
+            $('#topics').html(' ');
+            var tr , td1, td2 , td3;
+            $.post("http://meterbreak.triapptech.com/WebServices/getForumTopics.php",
+            {
+                id : forumId
+            },
+            function(data, status)
+            {
+                var jsonObj = data;
+                var forum = '';
+                if (jsonObj.code == 0)
+                {
+                    var forumData = jsonObj.response;
+                    for (var i = 0; i < jsonObj.rowCount; i++)
+                    {
+                        tr = '<tr class="GetForumPosts" id="'+ forumData[i].title + '" value="' + forumData[i].postID + '"">';
+                        td1 = '<td><a href="#fourm-storie">'+ forumData[i].title + '</a></td>';
+                        td2 = '<td>'+ forumData[i].comment_count +'</td>';
+                        td3 = '<td><a href="">' +forumData[i].last_active_time + '</a></td></tr>';
+
+                        forum = forum + tr + td1 + td2 + td3;
+                    }
+                    loading('hide');
+                    $('#topics').html(forum);
+                    $('#topics').listview('refresh');
+                } 
+                else if (jsonObj == -1)
+                {
+                    loading('hide');
+                    $('#topics').html("DB Connectivity Failed");
+                } 
+                else
+                {
+                    loading('hide');
+                    $('#topics').html("No Topic Found");
+                }
+            });
+
+        };
+
+        $(document).on("click", ".GetForumID", function() 
+        {
+            showForumTopics($(this).attr("value"), $(this).attr("id"));
+        });
+
+
+        function showForumPosts(postId, name)
+        {
+            loading('show');
+            $('#TopicHeading').html(name);
+            $('#forum-posts').html(' ');
+            var li , a , img , h2 , p1 , p2 , div , span;
+            $.post("http://meterbreak.triapptech.com/WebServices/getTopicReplies.php",
+            {
+                id: postId
+            },
+            function(data, status)
+            {
+                var jsonObj = data;
+                var forum = '';
+                if (jsonObj.code == 0)
+                {
+                    var postData = jsonObj.response;
+                    for (var i = 0; i < jsonObj.rowCount; i++)
+                    {
+                        li =    '<li data-icon="false">';
+                        a =     '<a href="#">';
+                        img =   '<img class="li-img" src="'+ postData[i].img +'">';
+                        h2 =    '<h2>'+ postData[i].display_name +'</h2>';
+                        p1 =    '<p>'+ postData[i].content +'</p>';
+                        p2 =    '<p class="c-name">'+ postData[i].postDate +'</p>';
+                        div =   '<div class="meter-full">';
+                        span =  '<span class="ui-li-count margin-right">#'+ postData[i].postID +'</span></div></a></li>';
+
+                        forum = forum + li + a + img + h2 + p1 + p2 + div + span;
+                    }
+                    loading('hide');
+                    $('#forum-posts').html(forum);
+                    $('#forum-posts').listview('refresh');
+                } 
+                else if (jsonObj == -1)
+                {
+                    loading('hide');
+                    $('#forum-posts').html("DB Connectivity Failed");
+                } 
+                else
+                {
+                    loading('hide');
+                    $('#forum-posts').html("No Posts Found");
+                }
+            });
+
+        };
+
+        $(document).on("click", ".GetForumPosts", function() 
+        {
+            
+            showForumPosts($(this).attr("value"), $(this).attr("id"));
+        });
+
+        function signIn(uName, passwd) 
+        {
+          
+          loading('show');
+            
+            $.post("http://meterbreak.triapptech.com/WebServices/Login.php",
+            {
+                username: uName,
+                password: passwd
+            },
+            function(data, status)
+            {
+                
+                var jsonObj = data;
+                if (jsonObj.code == 0)
+                {                    
+                    loading('hide');
+                    window.location.href = "http://meterbreak.triapptech.com/";
+                } 
+                else if (jsonObj.code == -1)
+                {
+                    loading('hide');
+                    $('#loginErrors').html("* DB Connectivity Failed");
+                } 
+                else
+                {
+                    loading('hide');
+                    $('#loginErrors').html("* Invalid Username/Password");
+                }
+            });
+        };
+
+        $(document).on("click", "#signMeIn", function()
+        {
+            signIn($('#uName').val(), $('#pass').val());
+        });
+
+        function checkSession()
+        {
+            $.post("http://meterbreak.triapptech.com/WebServices/check_session.php",
+            {
+                
+            },
+            function(data, status)
+            {
+                var jsonObj = data;
+                if (jsonObj.code == 0)
+                {                  
+                  window.location.href = "http://meterbreak.triapptech.com/";
+                }
+              
+            });
+        };
+
+        $(document).on("click", "#login", function()
+        {
+            checkSession();
+        });
+
+        var num1 = Math.floor((Math.random() * 10) + 1);
+          var num2 = Math.floor((Math.random() * 10) + 1);
+          var sum = num1 + num2;
+
+          $('#num1').html(num1);
+          $('#num2').html(num2);
+
+         function register(uName, passwd, rpasswd, e_mail, sex, dateOfBirth , captcha) 
+         {
+            loading('show');
+            var error = '';
+
+            if(uName == '')
+            {
+                error =  error + '<p>* Enter a Username</p>';
+            }
+            if(dateOfBirth == '')
+            {
+                error = error + '<p>* Enter your DOB</p>'
+            }
+            if(passwd == '' || rpasswd == '')
+            {
+                error = error + '<p>* Enter a Correct Password</p>';
+            }
+            if(passwd != rpasswd)
+            {
+                error = error + '<p>* Passwords didn\'t Match</p>';
+            }
+            if(e_mail == '' )
+            {
+                error = error + '<p>* Enter an Email Address</p>';
+            }
+            if(captcha != sum)
+            {
+                error = error + '<p>* Captcha Test Failed</p>';
+            }
+            
+            if(error == '')
+            {
+              $.post("http://meterbreak.triapptech.com/WebServices/Register.php",
+              {
+                  username: uName,
+                  password: passwd,
+                  email: e_mail,
+                  gender: sex,
+                  dob: dateOfBirth
+              },
+              function(data, status)
+              {
+                  var jsonObj = data;
+                  if (jsonObj.code == 0)
+                  {
+                     loading('hide');
+
+                     window.location.href = "#thankyou";
+
+                  } 
+                  else if (jsonObj == -1)
+                  {
+                      loading('hide');
+                      $('#regErrors').html("DB Connectivity Failed");
+                  } 
+                  else
+                  {
+                      loading('hide');
+                      $('#regErrors').html("Cannot Sign you up at the moment, Try Again!");
+                  }
+              });
+            }
+            else
+            {
+              loading('hide');
+              $('#regErrors').html(error);
+            }
+         };
+
+        $(document).on("click", "#signMeUp", function()
+        {
+            //alert($('#u-name').val() + ' ' + $('#password').val()+ ' ' + $('#r-password').val()+ ' ' + $('#email').val()+ ' ' + $('input[name=gender]:checked','#registerationForm').attr("value")+ ' ' + $('#date').val()+ ' ' + $('#captcha').val());
+            register($('#u-name').val(), $('#password').val(), $('#r-password').val(), $('#email').val(), $('input[name=gender]:checked', '#registerationForm').attr("value"), $('#date').val(), $('#captcha').val());
+
+        });
+
+
 });
+
+
+
+/*********************/
+
+
