@@ -2,8 +2,8 @@
 class configuration
 {
 	public $server = "localhost";
-	public $user = "meterbreak_user";
-	public $password = "Meterbreak123!@#";
-	public $db = "meterbreak";
+	public $user = "meter_app";
+	public $password = "Travioli32";
+	public $db = "meter_meterb";
 }
 ?>

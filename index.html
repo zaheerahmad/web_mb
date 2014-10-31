@@ -5,7 +5,8 @@
 <head>
 
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, width=device-width" />
     <title>Meterbreak</title>
     <link rel="shortcut icon" href="favicon.ico">
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,700">
@@ -16,7 +17,9 @@
     <script src="js/jquery.js"></script>
     <!-- <script src="_assets/js/index.js"></script> -->
     <script src="js/jquery.mobile-1.4.3.min.js"></script>
-    <script src="js/functions.js"></script>
+    <script src="js/ajaxfileupload.js"></script>
+    <script src="js/core.js"></script>
+    <script src="js/functions.js"></script>   
     <script>
         $(document).on("pagecreate", "#page", function() {
 
@@ -47,23 +50,44 @@
             });
 
         });
+
+        // function screenIssue() {
+        //     document.body.style.height = screen.availHeight + 'px';
+        // }
     </script>
 
     <style>
-        /*.modalWindow {
-            width: 100%;
-            height: 100%;
-            position: absolute;
-            z-index: 1500;
-            background: white;
-            opacity: 0.7;
-            overflow: hidden;
-            ;
+        .ui-loader-background {
+            width:100%;
+            height:100%;
+            top:0;
+            padding: 0;
+            margin: 0;
+            background: rgba(0, 0, 0, 0.3);
+            display:none;
+            position: fixed;
+            z-index:9999;
         }
-        .ui-loader {
-            z-index: 1501;
-        }*/
-        #regErrors, #loginErrors{ color:red;}
+
+        .ui-loading .ui-loader-background {
+            display:block;
+        }
+
+        /*.limitText {
+            -o-text-overflow: ellipsis;  
+            text-overflow:    ellipsis;  
+            overflow:hidden;              
+            white-space:nowrap;           
+            width: 400px;                
+            padding-right: 40px;
+        } */
+
+        #sign-in, #register , #survey , #GenreSurvey0 ,  #GenreSurvey1 , #GenreSurvey2 , #GenreSurvey3  ,#GenreSurvey4 , #GenreSurvey5 , #GenreSurvey6 , #GenreSurvey7
+        {
+            padding-top: 2.8125em !important;
+        }
+        #regErrors, #loginErrors, #errorStaric{ color:red;}
+
         #demo-page:not(INPUT):not(TEXTAREA) {
             -webkit-user-select: none;
             -moz-user-select: none;
@@ -77,16 +101,30 @@
 
 <body>
 
-    <div data-role="header" data-theme="b" data-position="fixed"  data-tap-toggle="false">
-        <h1 title="MeterBreak"><img src="images/logo.png" alt="" style="height:40px;"></h1>
+    <div data-role="header" data-theme="b" data-position="fixed"  data-tap-toggle="false" >
+        <h1 title="MeterBreak">
+            <a href="#movies" data-rel="popup" data-transition="flip"><img src="images/logo.png" alt="" style="height:40px;"></a>
+            <div data-role="popup" id="movies" data-theme="b">
+              <ul data-role="listview" data-inset="true" style="min-width:210px;">
+                <li><a id="moviesORgames" href="#movies-top-10" data-transition="flip">Movies</a></li>                       
+              </ul>
+          </div>
+        </h1>
         <a href="#left-panel" data-icon="bars" data-iconpos="notext" data-shadow="false" data-iconshadow="false" class="ui-nodisc-icon app-menu-bt">Open left panel</a>
-        <ul class="fav-links cf">
-          <li class="GetGames" id="all" value=""><a href="#top-10"><img src="images/top10.png" alt=""></a></li>
-          <li class="GetNews" id="all" value=""><a href="#news"><img src="images/news.png" alt=""></a></li>
-          <li><a href=""><img src="images/friends.png" alt=""></a></li>
-          <li><a href=""><img src="images/comingsoon.png" alt=""></a></li>
-          <li id="barcode"><a href=""><img src="images/barcode.png" alt=""></a></li>
-      </ul>
+        <ul class="fav-links cf" id="TopHeader">
+          <li class="GetGames gameHeader" id="all" value=""><a href="#top-10"><img src="images/top10.png" alt=""></a></li>
+          <li class="GetNews gameHeader" id="all" value=""><a href="#news"><img src="images/news.png" alt=""></a></li>
+          <li class="gameHeader"><a href=""><img src="images/friends.png" alt=""></a></li>
+          <li class="gameHeader"><a href=""><img src="images/comingsoon.png" alt=""></a></li>
+          <li  class="gameHeader" id="barcode"><a href=""><img src="images/barcode.png" alt=""></a></li>
+
+          <!-- <li class="GetMovies movieHeader" id="all" value="10"><a href="#top-10-movies"><img src="images/top10.png" alt=""></a></li>
+          <li class="GetMoviesNews movieHeader" id="all" value=""><a href="#movies-news"><img src="images/news.png" alt=""></a></li>
+          <li class="movieHeader" ><a href=""><img src="images/friends.png" alt=""></a></li>
+          <li class="movieHeader" ><a href=""><img src="images/comingsoon.png" alt=""></a></li>
+          <li  class="movieHeader" id="barcode"><a href=""><img src="images/barcode.png" alt=""></a></li> -->
+
+        </ul>
     </div><!-- /header -->
 
     <div data-role="page" id="home" data-url="home">
@@ -99,7 +137,7 @@
 
             <div class="container">
 
-                <h2 id="TopGamesHeading">Top 10 Games</h2>
+                <h2 id="TopGamesHeadingHome">Top 10 Games</h2>
 
                 <ul data-role="listview" data-inset="true" data-theme="b" class="top-10" id="mainTop10">
                     <li data-icon="false">
@@ -518,13 +556,6 @@
         <!-- /content -->
 
 
-
-        <!-- <div data-role="panel" id="right-panel" data-display="push" data-position="right" data-theme="b">
-
-      <p>Right push panel.</p>
-
-      <a href="#" data-rel="close" class="ui-btn ui-corner-all ui-shadow ui-mini ui-btn-inline ui-icon-delete ui-btn-icon-right">Close</a> -->
-
     </div>
     <!-- /panel -->
 
@@ -610,12 +641,12 @@
                         <div class="ui-block-a" style="width: 30%;">
                             <h2 style="margin-top: .5em;">Forums</h2>
                         </div>
-                        <div class="ui-block-b" style="width: 50%;">
+                        <!-- <div class="ui-block-b" style="width: 50%;">
                             <input type="text">
                         </div>
                         <div class="ui-block-c" style="width: 20%;">
                             <button type="submit" class="search">Search</button>
-                        </div>
+                        </div> -->
                     </div>
                 </form>
                 <ul data-role="listview" data-inset="true" data-theme="b" class="" id="forumsList">
@@ -640,31 +671,27 @@
        <h2 id="ForumHeading">Playstation 4</h2>  
       </div>
       <div class="row">
-        <table data-role="table" class="ui-responsive ui-shadow">
-          <thead>
-            <tr>
-              <th>Topic</th>
-              <th>Posts</th>
-              <th>Last Post</th>
-            </tr>
-          </thead>
-          <tbody id="topics">
-            <tr>
-              <td><a href="">Strider is cool!</a></td>
-              <td>1</td>
-              <td><a href="">5 monthes,1 week ago</a></td>
-            </tr>
-            
-          </tbody>
-
-        </table>
+        <ul data-role="listview" data-inset="true" data-theme="b" class="top-10" id="topics">
+       <li data-icon="false">
+        <a href="#fourm-storie">
+          <h2>Strider is cool</h2>
+          <p class="c-name">1 week, 2 days ago</p>
+          <span class="ui-li-count">Post 1</span>
+        </a>
+      </li>
+      
+    </ul>
       </div>
-      <div class="row">
-        <h4>Creat new topic in "Playstation"</h4>
+      <div id="topicArea" class="row">
+        <h4>Creat a new topic</h4>
         <label for="topic-title">Topic Title</label>
         <input type="text"id="topic-title"name="topic-title">
-        <textarea name="" id="" rows="10"></textarea>
-        <a href="" class="ui-btn ui-btn-inline red">Save</a>
+        <textarea name="" id="topicContent" rows="10"></textarea>
+        <a id="createTopic"  href="#" class="ui-btn ui-btn-inline red" value="15">Save</a>
+      </div>
+      <div id="sign-in-first" class="row">
+        <h4>Creat a new topic</h4>
+        <p>Please <a id="login" href="#sign-in">Sign in</a> or <a id="logup" href="#register">Register</a>  to create a topic in this forum</p>
       </div>
     </div><!-- /content -->
 
@@ -693,16 +720,19 @@
           </li>
         </ul>
       </div>
-      <div class="row">
-        <h4>Reply to:Travis</h4>
-        <input type="text">
-        <a href="" class="ui-btn-inline ui-btn red">Reply</a>
+      <h4 id="replyHeading"></h4>
+      <div id="commentArea"class="row">
+        <input id="myComment" type="text">
+        <a id="sendReply" value="15" href="#" class="ui-btn-inline ui-btn red">Reply</a>
       </div>
+      <div id="sign-in-to-reply" class="row">
+        <p>Please <a id="login" href="#sign-in">Sign in</a> to reply to this post</p>
+    </div>
     </div><!-- /content -->
 
   </div>
 
-
+  
 
 
     <div data-role="page" id="game-detail" data-url="page">
@@ -714,6 +744,44 @@
         <div role="main" class="ui-content">
 
             <div id="showDetails" class="container">
+
+
+
+            </div>
+
+        </div>
+        <!-- /content -->
+
+    </div>
+
+    <div data-role="page" id="news-detail" data-url="page">
+
+        <div data-role="header">
+
+        </div><!-- /header -->
+
+        <div role="main" class="ui-content">
+
+            <div id="showNewsDetails" class="container">
+
+
+
+            </div>
+
+        </div>
+        <!-- /content -->
+
+    </div>
+
+    <div data-role="page" id="mp-detail" data-url="page">
+
+        <div data-role="header">
+
+        </div><!-- /header -->
+
+        <div role="main" class="ui-content">
+
+            <div id="showMPDetails" class="container">
 
 
 
@@ -790,8 +858,8 @@
       </div><!-- /header -->
       <div role="main" class="ui-content">
         <p style="text-align: center;">
-          <a id="login" href="#sign-in"class="red ui-btn ui-btn-inline" style="margin-left: 1em;">SignIn</a>
-          <a href="#register" class="red ui-btn ui-btn-inline" style="margin-left: 1em;">Register</a>
+          <a id="LoginPage1" href="#sign-in"class="red ui-btn ui-btn-inline" style="margin-left: 1em;">Sign In</a>
+          <a id="LoginPage2" href="#register" class="red ui-btn ui-btn-inline" style="margin-left: 1em;">Register</a>
         </p>
         <h3>WHAT IS METERBREAK?</h3>
         <p>Reviews can be a great thing, but sometimes reviewers can get in the way of a good review.</p>
@@ -804,6 +872,27 @@
 
     </div>
 
+    <div data-role="page" id="sign-in"  >
+    <div data-role="header">
+
+    </div>
+    <div role="main" class="ui-content">
+    <h2>Sign In</h2>
+    <form id="signInn" method="post" action="javascript:void(0);">
+      <label for="u-name">Username</label>
+      <input type="text" name="uName" id="uName" required>
+      <label for="password">Password</label>
+      <input type="password" name="pass" id="pass" required>
+      <div id="loginErrors"></div>
+      <button class="red ui-btn ui-btn-inline" id="signMeIn">Sign In</button>
+    </form>
+    </div>
+
+  </div>
+
+  
+
+
     <div data-role="page" id="register" >
     <div data-role="header">
 
@@ -811,25 +900,25 @@
     <div role="main" class="ui-content">
       <h2>User Registration</h2>
       <form id="registerationForm" method="post" action="javascript:void(0);">
-        <label for="u-name">Username</label>
-        <input type="text" name="u-name" id="u-name">
-        <label for="password">Password</label>
-        <input type="password" name="password" id="password">
-        <label for="r-password">Re-type Password</label>
-        <input type="password" name="r-password" id="r-password">
-        <label for="email">Email</label>
-        <input type="email" name="email" id="email" placeholder="example@somewhere.com">
+        <label for="u-name" id="unLabel">Username</label>
+        <input type="text" name="u-name" id="u-name" autocomplete="off" required>
+        <label for="password" id="pLabel">Password</label>
+        <input type="password" name="password" id="password" autocomplete="off" required>
+        <label for="r-password" id="prLabel">Re-type Password</label>
+        <input type="password" name="r-password" id="r-password" required>
+        <label for="email" id="eLabel">Email</label>
+        <input type="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" name="email" id="email" placeholder="example@somewhere.com" title="example@somewhere.com" required>
         <fieldset data-role="controlgroup" data-type="horizontal">
           <legend>Gender</legend>
           <label for="male">Male</label>
-          <input type="radio" name="gender" id="male" value="m" checked>
+          <input type="radio" name="gender" id="male" value="m" readonly="true" checked>
           <label for="female">Female</label>
-          <input type="radio" name="gender" id="female" value="f"> 
+          <input type="radio" name="gender" id="female" value="f" readonly="true" > 
         </fieldset>
-        <label for="date">Date of Birth</label>
-        <input type="date" data-role="date"id="date">
-        <label for="captcha"><span id="num1"> 8 </span> + <span id="num2"> 2 </span> = ? </label>
-        <input type="text"id="captcha"name="captcha">
+        <label for="date" id="dLabel">Date of Birth</label>
+        <input type="date" data-role="date" id="date" placeholder="mm/dd/yyyy" required>
+        <label for="captcha" id="cLabel"><span id="num1"> 8 </span> + <span id="num2"> 2 </span> = ? </label>
+        <input type="text"id="captcha"name="captcha" required>
         <p>By registering a new account, you indicate that you have read and understood our <a href="">Privacy Policy</a> and <a href="">Terms of Use</a>. Until you validate your account with the email we send to the address you provided, you will not be able to use your account.</p>
         <div id="regErrors"></div>
         <button class="red ui-btn ui-btn-inline" id="signMeUp">Sign Up</button>
@@ -838,26 +927,7 @@
 
   </div>
 
-    <div data-role="page" id="sign-in" >
-    <div data-role="header">
-
-    </div><!-- /header -->
-    <div role="main" class="ui-content" id="signInForm">
-    <h2>Sign In</h2>
-    <form method="post" action="javascript:void(0);" id="signInn">
-      <label for="u-name">Username</label>
-      <input type="text" name="u-name" id="uName">
-      <label for="password">Password</label>
-      <input type="password" name="password" id="pass">
-      <div id="loginErrors"></div>
-      <button id="signMeIn" class="red ui-btn ui-btn-inline">Sign In</button>
-    </form>
-    
-    </div><!-- /content -->
-
-  </div>
-
-  <div data-role="page" id="thankyou" data-url="thankyou">
+   <div data-role="page" id="thankyou" data-url="thankyou">
     <div data-role="header">
 
     </div><!-- /header -->
@@ -870,14 +940,691 @@
       <p>-Check your email inbox</p>
       <p>-Click the verification link in the email</p>
       <p>-If you can't find the email,check your spam folder</p>
-      <p>If the email is not in your spam folder,press here to <a href="">resend the email</a></p>
+      <p>If the email is not in your spam folder,press here to <a id="resendEmail" href="#">resend the email</a></p>
+    </div><!-- /content -->
+
+  </div>
+
+
+    <div data-role="page" id="dailypoll" data-url="dailypoll">
+      <div data-role="header">
+
+      </div><!-- /header -->
+      <div role="main" class="ui-content">
+        <div class="dailypoll-main">
+          <h2 style="margin:0;padding:1em;">DAILY POLL</h2>
+          <div class="q-a">
+            <div class="question">
+              <h4 id="pollQuestion" style="margin:0;padding:1em;">Which E3 announcement are you most excited about?</h4>
+            </div>
+            <div class="answer">
+              <form id="pollForm" >
+                <fieldset id="pollOptions" data-role="controlgroup"data-theme="b"style="margin: 0;">
+                  
+                  
+                </fieldset>
+                <button id="pollResults" class="red ui-btn ui-btn-inline results" style="margin-left: 1em;">Results</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div><!-- /content -->
+
+    </div>
+
+    <!-- ************************************ MOVIES ******************************** -->
+
+    <div data-role="page" id="movies-top-10" data-url="movies-top-10">
+    <div data-role="header">
+
+    </div><!-- /header -->
+    <div role="main" class="ui-content">
+      <div class="container">
+        <h2 id="TopMoviesHeadingHome">Top 10 Movies</h2>
+        
+        <ul data-role="listview" data-inset="true" data-theme="b" class="top-10" id="mainMovies">
+         <li data-icon="false">
+          <a href="#game-detail">
+            <div class="li-img">
+              <img src="images/download1.jpg">
+            <span class="discrip">1</span>
+            </div>
+            <div class="li-detail">
+              <h2>Metal Gear Solid 5</h2>
+            <p>Metal Gear Solid V: The Phantom Pain is a separated composite of two previously announced Kojima Productions projects, the both of which formed a complex deception.</p>
+            <p class="c-name">May 1,2014 | Rahmet Hameed</p>
+            </div>
+            <div class="meter-full">
+              <span class="ui-li-count">100</span>
+              <div class="thermometer"></div>
+            </div>
+          </a>
+        </li>
+         
+      </ul>
+        
+      </div>
+    </div><!-- /content -->
+
+  </div>
+
+  <div data-role="page" id="top-10-movies" data-url="page">
+
+        <div data-role="header">
+
+        </div><!-- /header -->
+
+        <div role="main" class="ui-content">
+
+            <div class="container">
+
+                <h2 id="TopMoviesHeading">Top 10 Movies</h2>
+
+                <ul data-role="listview" data-inset="true" data-theme="b" class="top-10" id="top10Movies">
+
+                   <li data-icon="false">
+                      <a href="#game-detail">
+                        <div class="li-img">
+                          <img src="images/download1.jpg">
+                          <span class="discrip">1</span>
+                      </div>
+                      <div class="li-detail">
+                          <h2>Metal Gear Solid 5</h2>
+                          <p>Metal Gear Solid V: The Phantom Pain is a separated composite of two previously announced Kojima Productions projects, the both of which formed a complex deception.</p>
+                          <p class="c-name">May 1,2014 | Rahmet Hameed</p>
+                      </div>
+                      <div class="meter-full">
+                          <span class="ui-li-count">100</span>
+                          <div class="thermometer"></div>
+                      </div>
+                     </a>
+                    </li>               
+
+
+
+          </ul>
+
+            </div>
+
+        </div>
+        <!-- /content -->
+
+
+    </div>
+  
+
+  <div data-role="page" id="movie-detail" data-url="page">
+
+        <div data-role="header">
+
+        </div><!-- /header -->
+
+        <div role="main" class="ui-content">
+
+            <div id="showMovieDetails" class="container">
+
+
+
+            </div>
+
+        </div>
+        <!-- /content -->
+
+    </div>
+
+
+    <div data-role="page" id="search-movie" data-url="search-mvoie">
+      <div data-role="header">
+
+      </div><!-- /header -->
+      <div role="main" class="ui-content">
+       
+        <div class="select-platform"style="margin-top: 5px;border-bottom:1px solid red;">
+           <h2>Select Platform</h2>
+          <a href="" class="ui-btn ui-btn-inline movieCategory" value="all">All Platforms</a>
+          <a href="" class="ui-btn ui-btn-inline movieCategory" value="console">Console</a>
+          <a href="" class="ui-btn ui-btn-inline movieCategory" value="tv-shows">TV Shows</a>         
+        </div>
+        <div class="select-letter">
+           <h2>Select Letter</h2>
+          <a href="" class="ui-btn ui-btn-inline movieCatAlpha">A</a>
+          <a href="" class="ui-btn ui-btn-inline movieCatAlpha">B</a>
+          <a href="" class="ui-btn ui-btn-inline movieCatAlpha">C</a>
+          <a href="" class="ui-btn ui-btn-inline movieCatAlpha">D</a>
+          <a href="" class="ui-btn ui-btn-inline movieCatAlpha">E</a>
+          <a href="" class="ui-btn ui-btn-inline movieCatAlpha">F</a>
+          <a href="" class="ui-btn ui-btn-inline movieCatAlpha">G</a>
+          <a href="" class="ui-btn ui-btn-inline movieCatAlpha">H</a>
+          <a href="" class="ui-btn ui-btn-inline movieCatAlpha">I</a>
+          <a href="" class="ui-btn ui-btn-inline movieCatAlpha">J</a>
+          <a href="" class="ui-btn ui-btn-inline movieCatAlpha">K</a>
+          <a href="" class="ui-btn ui-btn-inline movieCatAlpha">L</a>
+          <a href="" class="ui-btn ui-btn-inline movieCatAlpha">M</a>
+          <a href="" class="ui-btn ui-btn-inline movieCatAlpha">N</a>
+          <a href="" class="ui-btn ui-btn-inline movieCatAlpha">O</a>
+          <a href="" class="ui-btn ui-btn-inline movieCatAlpha">P</a>
+          <a href="" class="ui-btn ui-btn-inline movieCatAlpha">Q</a>
+          <a href="" class="ui-btn ui-btn-inline movieCatAlpha">R</a>
+          <a href="" class="ui-btn ui-btn-inline movieCatAlpha">S</a>
+          <a href="" class="ui-btn ui-btn-inline movieCatAlpha">T</a>
+          <a href="" class="ui-btn ui-btn-inline movieCatAlpha">U</a>
+          <a href="" class="ui-btn ui-btn-inline movieCatAlpha">V</a>
+          <a href="" class="ui-btn ui-btn-inline movieCatAlpha">W</a>
+          <a href="" class="ui-btn ui-btn-inline movieCatAlpha">X</a>
+          <a href="" class="ui-btn ui-btn-inline movieCatAlpha">Y</a>
+          <a href="" class="ui-btn ui-btn-inline movieCatAlpha">Z</a>
+        </div>
+        <ul data-role="listview" data-inset="true" data-theme="b" class="top-10" id="movieResults">
+         
+        </ul>
+      </div><!-- /content -->
+
+    </div>
+
+<!-- ********************************************************** 
+        ********************************************************** 
+                        BUDDY PRESS (STARTING)
+        **********************************************************                 
+ ********************************************************** -->
+
+<div data-role="page" id="profile" data-url="profile">
+    <div data-role="header">
+
+    </div><!-- /header -->
+    <div role="main" class="ui-content">
+      <div class="container">
+        <div class="profile head"style="padding-bottom:1em">
+          <p id="welcomeUser" class="c-name">Welcome, </p>
+          <img id="profilePhoto" src="" alt="">
+          <a id="retakeSurvey" href="#survey"class="ui-btn ui-btn-b ui-btn-inline red">Retake Survey</a>
+            <a href=""class="ui-btn ui-btn-b ui-btn-inline red">Select Character</a>
+          <a href=""class="ui-btn ui-btn-b ui-btn-inline red">Reset 3 Questions Score</a>
+        </div>
+        <div>
+          <form id="ChangeProfileForm" method="post" action="javascript:void(0);">
+            <fieldset data-role="controlgroup" data-theme="b" data-type="horizontal" id="getProfileStatus">
+              <legend>Profile type</legend>
+              <input type="radio" name="profileType" id="radio-choice-t-6a" value="public">
+              <label for="radio-choice-t-6a">Public</label>
+              <input type="radio" name="profileType" id="radio-choice-t-6b" value="private" >
+              <label for="radio-choice-t-6b">Friends only</label>
+            </fieldset>
+          </form>
+        </div>
+
+        <div data-role="tabs" id="tabs">
+          <div data-role="navbar">
+            <ul>
+              <li class="active"><a href="#one" data-ajax="false" class="ui-btn-b">About Yourself</a></li>
+              <li><a href="#two" data-ajax="false" class="ui-btn-b">Your Survey Result</a></li>
+              <li><a href="#three" data-ajax="false" class="ui-btn-b">Edit Profile</a></li>
+            </ul>
+          </div>
+          <div id="one" class="ui-body-d ui-content">
+            <h2>About Yourself</h2>
+            <form id="AboutMeForm" method="post" action="javascript:void(0);">
+              <label for="me">About me</label>
+              <input type="text" name="me" id="me1">
+              <label for="me">Currentlly Playing</label>
+              <input type="text" name="me" id="me2">
+              <label for="me">Gamer tag (Comma separated)</label>
+              <input type="text" name="me" id="me3">
+              <button id="updateAboutMe" class="ui-btn ui-btn-inline red">Save</button>
+            </form>
+          </div>
+          <div id="two">
+            <ul data-role="listview" data-inset="true" data-theme="" id="YourSurveyResults">
+              <li>Graphics <span class="ui-li-count">8</span></li>
+              <li>Control <span class="ui-li-count">9</span></li>
+              <li>Music <span class="ui-li-count">7</span></li>
+              <li>Racing <span class="ui-li-count">10</span></li>
+            </ul>
+          </div>
+          <div class="" id="three">
+            <form id="updateProfileForm" method="post" action="javascript:void(0);">
+              <label for="profilePicture">Upload Profile Picture</label>
+              <input type="file" name="profilePicture" id="profilePicture">  
+              <label for="u-name">User name</label>
+              <input type="text" name="u-name" id="pu-name" disabled>
+              <label for="f-name">First name</label>
+              <input type="text" name="f-name" id="pf-name">
+              <label for="l-name">Last name</label>
+              <input type="text" name="l-name" id="pl-name">
+              <label for="d-name">Display name</label>
+              <input type="text" name="d-name" id="pd-name">
+              <label for="email">Email</label>
+              <input type="text" name="email" id="pemail">
+              <fieldset data-role="controlgroup" data-type="horizontal" data-theme="b">
+                <legend>Sex</legend>
+                <label for="pmale">Male</label>
+                <input type="radio" name="pgender" id="pmale" value="m">
+                <label for="pfemale">Female</label>
+                <input type="radio" name="pgender" id="pfemale" value="f"> 
+              </fieldset>
+              <label for="date" id="dLabel">Date of Birth</label>
+              <input type="date" data-role="date" id="pdate" placeholder="mm/dd/yyyy">
+              <label for="o-password">Old Password</label>
+              <input type="password" name="o-password" id="po-password">
+              <label for="n-password">New Password</label>
+              <input type="password" name="n-password" id="pn-password">
+              <label for="r-password">Re-type Password</label>
+              <input type="password" name="r-password" id="pr-password">
+              
+              <button id="updateProfile" class="red ui-btn ui-btn-inline" >Submit</button>
+            </form>
+          </div>
+        </div>
+
+        
+    </div><!-- /content -->
+
+  </div>
+</div>
+
+  <div data-role="page" id="members" data-url="members">
+    <div data-role="header">
+
+    </div><!-- /header -->
+    <div role="main" class="ui-content">
+      <div class="container">
+        <div class="ui-grid-b head">
+            <div class="ui-block-a"style="width: 35%;">
+              <h2 style="margin-top: .5em;">Friends</h2>
+            </div>
+            <div class="ui-block-b"style="width: 40%;">
+              <input id="searchKey" type="text" placeholder="Search members ...">
+
+            </div>
+            <div class="ui-block-c"style="width: 25%;">
+              <button id="searchMyFriends" type="submit"class="search red  ui-btn ui-btn-inline"style="height:2.8em;">Search</button>
+            </div>
+          </div>
+
+          <div class="members"data-role="listview" data-inset="true">
+            <!-- <a id="searchMyFriends" href=""class="ui-btn ui-btn-b ui-btn-inline count">All Members<span id="totalMembers" class="ui-li-count">0</span></a> -->
+            <a id="showMyFriends" href=""class="ui-btn ui-btn-b ui-btn-inline count">My Friends<span id="totalFriends" class="ui-li-count">0</span></a>
+            <!-- <label for="select-choice-mini" class="select">Order By</label> -->
+            <select data-theme="b" name="select-choice-1" id="select-choice-1" data-inline="true">
+              <option value="lastActive">Order By</option>
+              <option value="lastActive">Last Active</option>
+              <option value="newest">Newest Registered</option>
+              <option value="alphabetical">Alphabatical</option>
+            </select>
+           
+          </div>
+        <ul data-role="listview" data-inset="true" data-theme="b" class="buddy-press" id="friendResults">
+         <li data-icon="false">
+          
+            <div class="li-img">
+              <a href=""><img src="images/download1.jpg"></a>
+            
+            </div>
+            <div class="li-detail">
+              <h2>Travis</h2>
+              <p class="c-name">the last of us</p>
+            <p>Metal Gear Solid V: The Phantom Pain is a separated composite of two previously announced Kojima Productions projects, the both of which formed a complex deception.</p>
+            <p>active some time ago</p>
+            <p><a href="" class="ui-btn ui-btn-inline red">Add Friend</a>
+          
+            </div>
+          
+        </li>
+         <li data-icon="false">
+          
+            <div class="li-img">
+              <a href=""><img src="images/download.jpg"></a>
+            
+            </div>
+            <div class="li-detail">
+              <h2>Travis</h2>
+              <p class="c-name">the last of us</p>
+            <p>Metal Gear Solid V: The Phantom Pain is a separated composite of two previously announced Kojima Productions projects, the both of which formed a complex deception.</p>
+            <p>active some time ago</p>
+            <p><a href="" class="ui-btn ui-btn-inline red">Add Friend</a>
+          
+            </div>
+          
+        </li>
+        
+      </ul>
+      </div>
     </div><!-- /content -->
 
   </div>
 
 
 
-<!-- ********************************************************** -->
+  <div data-role="page" id="members-info" data-url="members-info">
+    <div data-role="header">
+
+    </div><!-- /header -->
+    <div role="main" class="ui-content">
+      <div class="container">
+        <div class="head">
+          <h2 id="memberName"></h2>
+        </div>
+        <div class="profile head friendshipOptions"style="padding-bottom:1em">
+          
+          <img id="memberPicture" src="" alt=""style="float: left;margin-right:1em;">
+          <h1 id="memberUsername"></h1>
+          <p id="lastMemberActiveTime" class="c-name mr0"></p>
+          <a id="" value="" href=""class="ui-btn ui-btn-b ui-btn-inline red friendshipActivity"></a>
+            <a id="compareTop250" value="" href="#top-250"class="ui-btn ui-btn-b ui-btn-inline red">Compare Top 250 Games</a>
+          <a href="#private-message"class="ui-btn ui-btn-b ui-btn-inline red" data-rel="popup" data-transition="flip" class="">Private Message</a>
+        </div>
+        <div>
+          <p><span class="c-name" >Gender:</span><span id="memberGender"></span></p>
+          <p><span class="c-name" >About me:</span><span id="memberAboutMe"></span></p>
+          <p><span class="c-name" >Currently Playing:</span><span id="memberPlaying"></span></p>
+          <p><span class="c-name" >Gamer Tag:</span><span id="memberTags"></span></p>
+        </div>
+        <div  data-role="listview" data-inset="true">
+          <a href="" class="ui-btn ui-btn-inline ui-btn-b">Activity</a>
+          <!-- <a href="" class="ui-btn ui-btn-inline ui-btn-b">Profile</a>
+          <a href="" class="ui-btn ui-btn-inline ui-btn-b count">Friends<span class="ui-li-count">0</span></a>
+          <a href="" class="ui-btn ui-btn-inline ui-btn-b count">Groups<span class="ui-li-count">0</span></a>
+          <a href="" class="ui-btn ui-btn-inline ui-btn-b">Fourms</a>
+          
+        
+          <div>
+          <a href="" class="ui-btn ui-btn-inline ui-btn-b">Personal</a>
+          <a href="" class="ui-btn ui-btn-inline ui-btn-b">Mentions</a>
+          <a href="" class="ui-btn ui-btn-inline ui-btn-b count">Favorites<span class="ui-li-count">0</span></a>
+          <a href="" class="ui-btn ui-btn-inline ui-btn-b count">Friends<span class="ui-li-count">0</span></a>
+          <a href="" class="ui-btn ui-btn-inline ui-btn-b">Groups</a>
+          <select data-theme="b"name="select-choice-1" id="select-choice-1"data-inline="true">
+              <option value="">Show</option>
+              <option value="">Everything</option>
+              <option value="">Updates</option>
+              <option value="">Friendship</option>
+              <option value="">New Groups</option>
+              <option value="">Group membership</option>
+              <option value="">Topics</option>
+              <option value="">Replies</option>
+            </select>
+          </div> -->
+        </div>
+        <div id="postOnMemberWallArea">
+        <p id="publicMessageToMember">Public message to Travis ?</p>
+        <form method="post" action="javascript:void(0);">
+          <textarea name="wallcomment"  cols="30" rows="10" id="postOnWallContent"></textarea>
+          <button id="postOnWall" value="" class="ui-btn ui-btn-inline red">Send</button>
+        </form>
+      </div>
+        <ul data-role="listview" data-inset="true" data-theme="b" class="buddy-press" id="memberActivities">
+         <!-- <li data-icon="false">
+          
+            <div class="li-img">
+              <a href=""><img src="images/download1.jpg"></a>
+            
+            </div>
+            <div class="li-detail">
+              <h2>Travis</h2>
+              <p class="c-name">May 1,2014</p>
+              <p>Metal Gear Solid V: The Phantom Pain is a separated composite of two previously announced Kojima Productions projects, the both of which formed a complex deception.</p>
+              <div class="likes">
+                <div class="scoring cf">
+                  <div class="score">1 <a href=""><span class="thumb-up"></span></a></div>
+                  <div class="score"><a href=""><span class="thumb-dn"></span></a>0</div>
+                  <div class="score"style="margin-left: 1em;">
+                  <a href="" class="ui-btn ui-btn-inline red count">Comment<span class="ui-li-count">12</span></a>
+                <a href="" class="ui-btn ui-btn-inline red">Favourite</a>
+                
+                </div>
+                </div>
+                
+              </div>
+            </div>
+          
+        </li> -->
+         
+        
+      </ul>
+     
+      <div id="sign-in-to-post" class="row">
+        <p>Please <a id="login" href="#sign-in">Sign in</a> to post here...</p>
+    </div>
+
+    <div data-role="popup" id="private-message"class="ui-content">
+        
+        <div class="head">
+          <h2>Compose</h2>
+        </div>
+        <div>
+
+          <form method="post" action="javascript:void(0);">
+            <label for="u-sname">Username:</label>
+            <input type="text" name="u-sname" id="u-sname">
+            <label for="subject">Subject:</label>
+            <input type="text" name="subject" id="subject">
+            <label for="t-arae">Message:</label>
+            
+            <textarea name="t-area" id="t-area" cols="30" rows="10"></textarea>
+            <button id="sendMessage" class="ui-btn ui-btn-inline red">Send</button>
+          </form>
+        </div>
+      </div>
+
+      </div>
+    </div><!-- /content -->
+
+  </div>
+
+
+  <div data-role="page" id="buddy-Press" data-url="Buddy-press">
+    <div data-role="header">
+
+    </div><!-- /header -->
+    <div role="main" class="ui-content">
+      <div class="container">
+
+        <div class="head">
+          <h2 id="myName"></h2>
+        </div>
+        <div class="profile head friendshipOptions"style="padding-bottom:1em">
+          
+          <img id="myPicture" src="" alt=""style="float: left;margin-right:1em;">
+          <h1 id="myUsername"></h1>
+          <p id="mylastMemberActiveTime" class="c-name mr0"></p>
+          
+            <a id="compareTop250" value="" href="#top-250"class="ui-btn ui-btn-b ui-btn-inline red">Compare Top 250 Games</a>
+          
+        </div>
+        <div>
+          <p><span class="c-name" >Gender:</span><span id="myGender"></span></p>
+          <p><span class="c-name" >About me:</span><span id="myAboutMe"></span></p>
+          <p><span class="c-name" >Currently Playing:</span><span id="myPlaying"></span></p>
+          <p><span class="c-name" >Gamer Tag:</span><span id="myTags"></span></p>
+        </div>
+        <div  data-role="listview" data-inset="true">
+          <a id="activity"  class="ui-btn ui-btn-inline ui-btn-b">Activity</a>
+          <a id="showmyProfile" href="#profile" class="ui-btn ui-btn-inline ui-btn-b">Profile</a>
+          <a id="searchFriends" href="#members" class="ui-btn ui-btn-inline ui-btn-b count">Friends</a>
+          <a href="#inbox"class="ui-btn ui-btn-b ui-btn-inline red"data-rel="popup" data-transition="flip">Inbox</a>
+          <a id="sentBox" href="#sent"class="ui-btn ui-btn-b ui-btn-inline red"data-rel="popup" data-transition="flip">Sent</a>
+          <a href="#my-private-message"class="ui-btn ui-btn-b ui-btn-inline red" data-rel="popup" data-transition="flip" class="">Compose</a>
+          <!-- <a href="" class="ui-btn ui-btn-inline ui-btn-b count">Groups<span class="ui-li-count">0</span></a>
+          <a href="" class="ui-btn ui-btn-inline ui-btn-b">Fourms</a>
+          
+        
+          <div>
+          <a href="" class="ui-btn ui-btn-inline ui-btn-b">Personal</a>
+          <a href="" class="ui-btn ui-btn-inline ui-btn-b">Mentions</a>
+          <a href="" class="ui-btn ui-btn-inline ui-btn-b count">Favorites<span class="ui-li-count">0</span></a>
+          <a href="" class="ui-btn ui-btn-inline ui-btn-b count">Friends<span class="ui-li-count">0</span></a>
+          <a href="" class="ui-btn ui-btn-inline ui-btn-b">Groups</a>
+          <select data-theme="b"name="select-choice-1" id="select-choice-1"data-inline="true">
+              <option value="">Show</option>
+              <option value="">Everything</option>
+              <option value="">Updates</option>
+              <option value="">Friendship</option>
+              <option value="">New Groups</option>
+              <option value="">Group membership</option>
+              <option value="">Topics</option>
+              <option value="">Replies</option>
+            </select>
+          </div> -->
+        </div>
+
+        <div class="ui-grid-b head">
+            <div class="ui-block-a"style="width: 30%;">
+              <h2 style="margin-top: .5em;" id="whatsNew">What,s New </h2>
+            </div>
+            <div class="ui-block-b"style="width: 45%;">
+              <input type="text" id="status">
+            </div>
+            <div class="ui-block-c"style="width: 25%;">
+              <button id="updateActivity" type="submit"class="search red  ui-btn ui-btn-inline"style="height:2.8em;">Activity Update</button>
+            </div>
+          </div>
+        <ul data-role="listview" data-inset="true" data-theme="b" class="buddy-press" id="userActivities">
+         <li data-icon="false">
+          
+            <div class="li-img">
+              <a href=""><img src="images/download1.jpg"></a>
+            
+            </div>
+            <div class="li-detail">
+              <h2>Travis</h2>
+              <p class="c-name">May 1,2014</p>
+              <p>Metal Gear Solid V: The Phantom Pain is a separated composite of two previously announced Kojima Productions projects, the both of which formed a complex deception.</p>
+              <div class="likes">
+                <div class="scoring cf">
+                  <div class="score">1 <a href=""><span class="thumb-up"></span></a></div>
+                  <div class="score"><a href=""><span class="thumb-dn"></span></a>0</div>
+                  <div class="score"style="margin-left: 1em;">
+                  <a href="" class="ui-btn ui-btn-inline red">Comment</a>
+                <a href="" class="ui-btn ui-btn-inline red">Favourite</a>
+                <a href="" class="ui-btn ui-btn-inline red">Delete</a>
+                <a href="" class="ui-btn ui-btn-inline red">Spam</a>
+                </div>
+                </div>
+                
+              </div>
+            </div>
+          
+        </li>
+         <li data-icon="false">
+          
+            <div class="li-img">
+              <a href=""><img src="images/download.jpg"></a>
+            
+            </div>
+            <div class="li-detail">
+              <h2>Travis</h2>
+              <p class="c-name">May 1,2014</p>
+            <p>Metal Gear Solid V: The Phantom Pain is a separated composite of two previously announced Kojima Productions projects, the both of which formed a complex deception.</p>
+            <div class="likes">
+                <div class="scoring cf">
+                  <div class="score">1 <a href=""><span class="thumb-up"></span></a></div>
+                  <div class="score"><a href=""><span class="thumb-dn"></span></a>0</div>
+                  <div class="score"style="margin-left: 1em;">
+                  <a href="" class="ui-btn ui-btn-inline red">Comment</a>
+                <a href="" class="ui-btn ui-btn-inline red">Favourite</a>
+                <a href="" class="ui-btn ui-btn-inline red">Delete</a>
+                <a href="" class="ui-btn ui-btn-inline red">Spam</a>
+                </div>
+                </div>
+                
+              </div>
+            </div>
+          
+        </li>
+        
+      </ul>
+      </div>
+
+      <div data-role="popup" id="inbox"class="ui-content">
+        <div class="head">
+          <h2>Inbox</h2>
+        </div>
+        <ul data-role="listview" data-inset="true" data-theme="b" class="top-10">
+          <li data-icon="false">
+            <a href="#">
+              <div class="li-img">
+                <img src="images/download1.jpg">
+                
+              </div>
+              <div class="li-detail">
+                <h2>Travis</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Id nam voluptatem quam vero excepturi repudiandae dolores in asperiores. Facere nemo delectus molestias modi perferendis impedit sapiente nam ut a et.</p>
+                <p class="c-name">May 1,2014</p>
+              </div>
+
+            </a>
+          </li>
+          <li data-icon="false">
+            <a href="#">
+              <div class="li-img">
+                <img src="images/download.jpg">
+                
+              </div>
+              <div class="li-detail">
+                <h2>Travis</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Id nam voluptatem quam vero excepturi repudiandae dolores in asperiores. Facere nemo delectus molestias modi perferendis impedit sapiente nam ut a et.</p>
+                <p class="c-name">May 1,2014</p>
+                
+              </div>
+
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div data-role="popup" id="sent"class="ui-content">
+        <div class="head">
+          <h2>Sent</h2>
+        </div>
+        <ul data-role="listview" data-inset="true" data-theme="b" class="top-10" id="sentTexts">
+          <li data-icon="false">
+            <a href="#">
+              <div class="li-img">
+                <img src="images/download1.jpg">
+                
+              </div>
+              <div class="li-detail">
+                <h2>Travis</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Id nam voluptatem quam vero excepturi repudiandae dolores in asperiores. Facere nemo delectus molestias modi perferendis impedit sapiente nam ut a et.</p>
+                <p class="c-name">May 1,2014</p>
+              </div>
+
+            </a>
+          </li>
+          
+        </ul>
+      </div>
+      <div data-role="popup" id="my-private-message"class="ui-content">
+        <div class="head">
+          <h2>Compose</h2>
+        </div>
+        <div>
+
+          <form method="post" action="javascript:void(0);">
+            <label for="u-sname">Username:</label>
+            <input type="text" name="u-sname" id="mu-sname">
+            <label for="subject">Subject:</label>
+            <input type="text" name="subject" id="msubject">
+            <label for="t-arae">Message:</label>
+            
+            <textarea name="t-area" id="mt-area" cols="30" rows="10"></textarea>
+            <button id="msendMessage" class="ui-btn ui-btn-inline red">Send</button>
+          </form>
+        </div>
+      </div>
+
+    </div><!-- /content -->
+
+  </div>
+
+
+
+
+ <!-- ********************************************************** 
+        ********************************************************** 
+                        BUDDY PRESS (ENDING)
+        **********************************************************                 
+ ********************************************************** -->
+
+
 
     <div data-role="panel" id="left-panel" data-position="left" data-display="reveal" data-theme="b">
 
@@ -885,87 +1632,337 @@
 
         <ul data-role="listview" class="ui-listview">
 
-        <li>
-            <a href="#"class="ui-btn user-pic-name">
-                <img src="images/download.jpg" alt="" class="ui-li-icon"> Travis Timmons
-            </a>
+        <li id="profileLink">
+            
         </li>
 
-        <li class="ui-first-child">
+        <li class="ui-first-child" id="loginlogout">
 
-            <a href="#sign-reg" class="ui-btn ui-btn-icon-right ui-icon-carat-r">SignIn / Register</a>
-
-        </li>
-
-        <li>
-
-            <a href="#platforms" class="ui-btn ui-btn-icon-right ui-icon-carat-r">Platforms</a>
+            <a id="loginRegister" href="#sign-reg" class="ui-btn ui-btn-icon-right ui-icon-carat-r">Sign in / Register</a>
 
         </li>
 
         <li>
 
-            <a href="250games.html" class="ui-btn ui-btn-icon-right ui-icon-carat-r">Top 250 Games</a>
+            <a id="allPlatforms" href="#platforms" class="ui-btn ui-btn-icon-right ui-icon-carat-r gamePanel">Platforms</a>
 
         </li>
 
         <li>
 
-            <a id="showForums" href="#forums" class="ui-btn ui-btn-icon-right ui-icon-carat-r">Forums</a>
+            <a id="searchFriends" href="#members" class="ui-btn ui-btn-icon-right ui-icon-carat-r gamePanel">Friends</a>
 
         </li>
 
         <li>
 
-            <a id="meltingp" href="#meltingpoint" class="ui-btn ui-btn-icon-right ui-icon-carat-r">Melting Point</a>
+            <a id="activity" href="#buddy-Press" class="ui-btn ui-btn-icon-right ui-icon-carat-r gamePanel">Activity</a>
+
+        </li>
+
+        <!-- <li data-role="collapsible"class="sub-menu ui-btn ui-btn-icon-right" data-iconpos="right" data-inset="false" data-collapsed-icon="carat-d" data-expanded-icon="carat-u">
+            <h2>Top 250 Games</h2>
+
+            <ul data-role="listview">
+                <li><a id="top250Games" href="#top-250" >Your Top 250</a></li>
+                <li><a id="ourtop250Games" href="#our-top-250" >Ours Top 250</a></li>
+            </ul>
+        </li> -->
+
+        <li>
+
+            <a id="top250Games" href="#top-250" class="ui-btn ui-btn-icon-right ui-icon-carat-r gamePanel">Your Top 250 Games</a>
 
         </li>
 
         <li>
 
-            <a href="staff.html" class="ui-btn ui-btn-icon-right ui-icon-carat-r">Staff</a>
+            <a id="ourtop250Games" href="#our-top-250" class="ui-btn ui-btn-icon-right ui-icon-carat-r gamePanel">Our Top 250 Games</a>
 
         </li>
 
         <li>
 
-            <a  id="searchAll" href="#search"class="ui-btn ui-btn-icon-right ui-icon-carat-r">Search for a game</a>
+            <a id="showForums" href="#forums" class="ui-btn ui-btn-icon-right ui-icon-carat-r gamePanel">Forums</a>
 
         </li>
 
         <li>
 
-            <a href="help.html" class="ui-btn ui-btn-icon-right ui-icon-carat-r">Help</a>
+            <a id="meltingp" href="#meltingpoint" class="ui-btn ui-btn-icon-right ui-icon-carat-r gamePanel">Melting Point</a>
 
         </li>
 
         <li>
 
-            <a href="dailypoll.html" class="ui-btn ui-btn-icon-right ui-icon-carat-r">Daily Poll</a>
+            <a href="staff.html" class="ui-btn ui-btn-icon-right ui-icon-carat-r gamePanel">Staff</a>
 
         </li>
 
         <li>
 
-            <a href="Profile" class="ui-btn ui-btn-icon-right ui-icon-carat-r">Profile toolbars</a>
+            <a  id="searchAll" href="#search"class="ui-btn ui-btn-icon-right ui-icon-carat-r gamePanel">Search for a game</a>
 
         </li>
 
+        <li>
+
+            <a href="help.html" class="ui-btn ui-btn-icon-right ui-icon-carat-r gamePanel">Help</a>
+
+        </li>
+
+        <li>
+
+            <a id="poll" href="#dailypoll" class="ui-btn ui-btn-icon-right ui-icon-carat-r gamePanel">Daily Poll</a>
+
+        </li>
+
+        <li>
+
+            <a href="Profile" class="ui-btn ui-btn-icon-right ui-icon-carat-r gamePanel">Profile toolbars</a>
+
+        </li>
+
+        <li id="surveyInPanel">
+
+
+        </li>
+
+        <li>
+
+            <a id="allMovies" href="#search-movie" class="ui-btn ui-btn-icon-right ui-icon-carat-r moviePanel">All Movies/TV Shows</a>
+
+        </li>
+
+        <li>
+
+            <a id="poll" href="#dailypoll" class="ui-btn ui-btn-icon-right ui-icon-carat-r moviePanel">M2</a>
+
+        </li>
+
+        <li>
+
+            <a href="Profile" class="ui-btn ui-btn-icon-right ui-icon-carat-r moviePanel">M3</a>
+
+        </li>
 
 
     </ul>
 
     </div>
-    <!-- /leftpanel1 -->
+
+    <div data-role="page" id="survey" data-url="survey">
+    <div data-role="header">
+
+    </div><!-- /header -->
+    <div role="main" class="ui-content">
+      <h2 style="text-align: center;">GAME PROPERTY</h2>
+      <form class="survey" id="surveyForm">
+            
+        </form>
+    </div><!-- /content -->
+
+  </div>
+
+    
+    <div data-role="page" id="GenreSurvey0" data-url="GenreSurvey0">
+    <div data-role="header">
+
+    </div><!-- /header -->
+    <div role="main" class="ui-content">
+      <h2 style="text-align: center;">GENRE PROPERTY</h2>
+      <form class="survey" id="surveyForm0">
+             
+        </form>
+    </div><!-- /content -->
+
+  </div>
+
+  <div data-role="page" id="GenreSurvey1" data-url="GenreSurvey1">
+    <div data-role="header">
+
+    </div><!-- /header -->
+    <div role="main" class="ui-content">
+      <h2 style="text-align: center;">GENRE PROPERTY</h2>
+      <form class="survey" id="surveyForm1">
+            
+        </form>
+    </div><!-- /content -->
+
+  </div>
+
+  <div data-role="page" id="GenreSurvey2" data-url="GenreSurvey2">
+    <div data-role="header">
+
+    </div><!-- /header -->
+    <div role="main" class="ui-content">
+      <h2 style="text-align: center;">GENRE PROPERTY</h2>
+      <form class="survey" id="surveyForm2">
+            
+        </form>
+    </div><!-- /content -->
+
+  </div>
+
+  <div data-role="page" id="GenreSurvey3" data-url="GenreSurvey3">
+    <div data-role="header">
+
+    </div><!-- /header -->
+    <div role="main" class="ui-content">
+      <h2 style="text-align: center;">GENRE PROPERTY</h2>
+      <form class="survey" id="surveyForm3">
+             
+        </form>
+    </div><!-- /content -->
+
+  </div>
+
+  <div data-role="page" id="GenreSurvey4" data-url="GenreSurvey4">
+    <div data-role="header">
+
+    </div><!-- /header -->
+    <div role="main" class="ui-content">
+      <h2 style="text-align: center;">GENRE PROPERTY</h2>
+      <form class="survey" id="surveyForm4">
+            
+        </form>
+    </div><!-- /content -->
+
+  </div>
+
+  <div data-role="page" id="GenreSurvey5" data-url="GenreSurvey5">
+    <div data-role="header">
+
+    </div><!-- /header -->
+    <div role="main" class="ui-content">
+      <h2 style="text-align: center;">GENRE PROPERTY</h2>
+      <form class="survey" id="surveyForm5">
+            
+        </form>
+    </div><!-- /content -->
+
+  </div>
+
+  <div data-role="page" id="GenreSurvey6" data-url="GenreSurvey6">
+    <div data-role="header">
+
+    </div><!-- /header -->
+    <div role="main" class="ui-content">
+      <h2 style="text-align: center;">GENRE PROPERTY</h2>
+      <form class="survey" id="surveyForm6">
+            
+        </form>
+    </div><!-- /content -->
+
+  </div>
+
+  <div data-role="page" id="GenreSurvey7" data-url="GenreSurvey7">
+    <div data-role="header">
+
+    </div><!-- /header -->
+    <div role="main" class="ui-content">
+      <h2 style="text-align: center;">GENRE PROPERTY</h2>
+      <form class="survey" id="surveyForm7">
+            
+        </form>
+    </div><!-- /content -->
+
+  </div>
+
+  <!-- ********************************************************** -->
+
+  <div data-role="page" id="top-250" data-url="top-250">
+    <div data-role="header">
+
+    </div><!-- /header -->
+    <div role="main" class="ui-content">
+     <h2 id="Top250GamesHeading">Your Top 250 Games</h2>
+      <ul data-role="listview" data-inset="true" data-theme="b" class="top-10" id="CalculatedGamesList">
+       <li data-icon="false">
+        <a href="#game-detail">
+          <div class="li-img">
+            <img src="images/download1.jpg">
+            <span class="discrip">1</span>
+          </div>
+          <div class="li-detail">
+            <h2>Metal Gear Solid 5</h2>
+            <p>Metal Gear Solid V: The Phantom Pain is a separated composite of two previously announced Kojima Productions projects, the both of which formed a complex deception.</p>
+            <p class="c-name">May 1,2014 | Rahmet Hameed</p>
+          </div>
+          <div class="meter-full">
+            <span class="ui-li-count">100</span>
+            <div class="thermometer"></div>
+          </div>
+        </a>
+      </li>
+      
+    </ul>
+      <div class="pagination" id="paginate250">
+        
+      </div>
+    </div><!-- /content -->
+
+  </div>
+
+  <div data-role="page" id="our-top-250" data-url="our-top-250">
+    <div data-role="header">
+
+    </div><!-- /header -->
+    <div role="main" class="ui-content">
+     <h2 id="Top250GamesHeading">Our Top 250 Games</h2>
+      <ul data-role="listview" data-inset="true" data-theme="b" class="top-10" id="OurCalculatedGamesList">
+       <li data-icon="false">
+        <a href="#game-detail">
+          <div class="li-img">
+            <img src="images/download1.jpg">
+            <span class="discrip">1</span>
+          </div>
+          <div class="li-detail">
+            <h2>Metal Gear Solid 5</h2>
+            <p>Metal Gear Solid V: The Phantom Pain is a separated composite of two previously announced Kojima Productions projects, the both of which formed a complex deception.</p>
+            <p class="c-name">May 1,2014 | Rahmet Hameed</p>
+          </div>
+          <div class="meter-full">
+            <span class="ui-li-count">100</span>
+            <div class="thermometer"></div>
+          </div>
+        </a>
+      </li>
+      
+    </ul>
+      <div class="pagination" id="ourpaginate250">
+        
+      </div>
+    </div><!-- /content -->
+
+  </div>
 
     <script id="panel-init">
         $(function() {
 
             $("body>[data-role='panel']").panel();
             $( "[data-role='header']" ).toolbar();
+            // $("body>[data-role='panel']").panel().enhanceWithin();
+            // $( ".ui-panel").on( "panelopen", function( event, ui ) { $(".ui-page-active").addClass("page-fixed")} );
+            // $( ".ui-panel").on( "panelclose", function( event, ui ) { $(".ui-page-active").removeClass("page-fixed")} );
+        });
+
+        $(document).ready(function()
+        {
+            $(".post-reply").hide();
+            $(".comment-btn").click(function(){
+                $(this).parents("li.comment").find(".post-reply").slideDown();
+
+            });
+                $(".cancel").click(function(){
+                $(this).parents("li.comment").find(".post-reply").slideUp();
+            });
         });
 
     </script>
+
+
+  </script>
 
 </body>
 

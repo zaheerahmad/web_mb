@@ -34,6 +34,21 @@ a{
 	text-decoration: none;
 	color: #000;
 }
+.ui-bar-f {
+    color: white;
+    background-color: yellow;
+}
+
+.ui-body-f {
+    font-weight: bold;
+    color: white;
+    background-color: blue;
+}
+
+.ui-page-theme-f {
+    
+    background-color: blue;
+}
 .ui-overlay-a, .ui-page-theme-a, .ui-page-theme-a .ui-panel-wrapper {
 	/*background-color: #F4BB51;*/
 	background-image: url("../images/cross.jpg");
@@ -47,6 +62,21 @@ a{
 }
 .ui-page-theme-b .ui-btn, html .ui-bar-b .ui-btn, html .ui-body-b .ui-btn, html body .ui-group-theme-b .ui-btn, html head+body .ui-btn.ui-btn-b, .ui-page-theme-b .ui-btn:visited, html .ui-bar-b .ui-btn:visited, html .ui-body-b .ui-btn:visited, html body .ui-group-theme-b .ui-btn:visited, html head+body .ui-btn.ui-btn-b:visited{
 	background-color: #452045;
+}
+.ui-page-theme-a .ui-btn, html .ui-bar-a .ui-btn, html .ui-body-a .ui-btn, html body .ui-group-theme-a .ui-btn, html head+body .ui-btn.ui-btn-a, .ui-page-theme-a .ui-btn:visited, html .ui-bar-a .ui-btn:visited, html .ui-body-a .ui-btn:visited, html body .ui-group-theme-a .ui-btn:visited, html head+body .ui-btn.ui-btn-a:visited{
+	background-color: #0E1134;
+	color: #fff;
+	text-shadow:none;
+}
+.movies a.ui-btn,.movies .ui-btn{
+	background-color: #0E1134 !important;
+}
+.movies a.ui-btn:hover,.movies .ui-btn:hover{
+	background-color: #5a5a5a !important ;
+}
+.movies a.ui-btn-active,.movies .ui-btn-active{
+	background-color: #777777 !important;
+	border-color: #777777 !important;
 }
 .app-menu-bt{
 	width: 50px;
@@ -178,7 +208,7 @@ ul.fav-links li a img{
 .row .console .img .links a:last-child{
 	border-right: none;
 }
-p.c-name{
+.c-name{
 	color: gray;
 	font-weight: bold;
 }
@@ -340,9 +370,9 @@ width: 3em;
 	padding-right: 0;
 	font-size: .85em;
 }
-.info p{
+.info p,.marg-t-b a{
 	font-weight: bold;
-	color: #452045;
+	color: #452045 !important;
 }
 .staff-detail{
 	margin-top: 2em;
@@ -597,4 +627,132 @@ border-bottom: 1px solid lightgray;
 	width: 3em;
 	margin-right: 1em;
 	vertical-align: bottom;
+}
+.percent{
+	margin-top: -.88em;
+	margin-right: 0;
+	border: none;
+}
+.pagination a{
+	margin: 0;
+}
+.pages{
+	float: right;
+	margin-top: .5em;
+}
+.survey .ui-radio{
+	width: 10%;
+}
+.survey label{
+	padding-left: 0 !important;
+	padding-right: 0 !important;
+	text-align: center !important;
+}
+.survey .ui-controlgroup-controls {
+	width: 100%;
+}
+.pad-btn{
+	margin: 0;
+padding-left: 1em;
+padding-right: 1em;
+}
+#left-panel h2,#left-panel ul li.sub-menu,#left-panel-movies h2,#left-panel-movies ul li.sub-menu, .movies{
+	margin: 0;
+	padding: 0 !important;
+}
+/*.ui-panel-inner{
+	height: 93%;
+	overflow-y:auto;
+	position: fixed;
+	width: 15em; 
+}*/
+.buddy-press li p,.buddy-press li div{
+	white-space: normal;
+}
+.buddy-press li{
+	border-color:#fff !important;
+}
+.profile a.red{
+	margin-bottom: 0;
+}
+.profile img{
+	vertical-align: bottom;
+	width: 6em;
+}
+.score{
+	float: left;
+	margin-top: 1em;
+}
+.score a{
+	margin-top: 0;
+}
+.thumb-up{
+	background: url(../images/thumbs.png) 0px 0px no-repeat;
+display: inline-block;
+width: 24px;
+vertical-align: bottom;
+height: 25px;
+}
+.thumb-dn{
+	background: url(../images/thumbs.png) -27px 0px no-repeat;
+display: inline-block;
+width: 24px;
+vertical-align: bottom;
+height: 25px;
+}
+#profile .ui-li-count,a.count .ui-li-count{
+	margin-top: -.88em;
+	margin-right: 0;
+}
+a.count{
+	padding-right: 3em;
+}
+.scoring{
+	margin-top: 1em;
+}
+.white,.white a{
+	color:#fff !important;
+}
+.marg-t-b{
+	margin-top: 1em;
+	margin-bottom: 1em;
+}
+.profile h1{
+	font-weight: bold;
+	text-align: left;
+	font-size: 2em;
+	margin-bottom: 0;
+}
+.mr0{
+	margin: 0 !important;
+}
+a.ui-btn-active{
+	background-color: #2ad !important;
+}
+.page-fixed{
+position: fixed !important;
+}
+.reply{
+	margin-left: 6em !important;
+}
+.reply textarea{
+	background-color: #fff !important;
+	color: #000 !important;
+}
+.white{
+	color: #fff !important;
+}
+.ui-radio input{
+	display: none;
+}
+.survey .ui-radio label{
+	border-radius: 50% !important;
+}
+.survey .ui-radio label{
+	border-radius: 50% !important;
+height: 1em;
+width: 2em;
+padding-top: 0.5em;
+padding-bottom: .5em;
+border: none;
 }

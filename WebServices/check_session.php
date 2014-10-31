@@ -1,8 +1,8 @@
 <?php
-    
+   
 include 'response.php';
 header('Content-type: application/json');
-    
+header("Access-Control-Allow-Origin: *");    
 	session_start();
     $jsonResponse = new responsejson();
     

@@ -12,3 +12,138 @@
 [17-Sep-2014 09:51:06 UTC] PHP Fatal error:  Call to undefined function wp_check_password() in /home/triapptech/public_html/meterbreak/WebServices/DBLayer.php on line 40
 [17-Sep-2014 09:56:07 UTC] PHP Fatal error:  Call to undefined function wp_check_password() in /home/triapptech/public_html/meterbreak/WebServices/DBLayer.php on line 47
 [17-Sep-2014 10:32:40 UTC] PHP Fatal error:  Call to undefined function wp_check_password() in /home/triapptech/public_html/meterbreak/WebServices/DBLayer.php on line 47
+[18-Sep-2014 07:04:41 UTC] PHP Fatal error:  Call to a member function get() on a non-object in /home/triapptech/public_html/meterbreak/WebServices/includes/cache.php on line 113
+[18-Sep-2014 07:10:55 UTC] PHP Fatal error:  Call to a member function suppress_errors() on a non-object in /home/triapptech/public_html/meterbreak/WebServices/includes/option.php on line 172
+[18-Sep-2014 07:20:57 UTC] PHP Fatal error:  Call to a member function suppress_errors() on a non-object in /home/triapptech/public_html/meterbreak/WebServices/includes/option.php on line 174
+[18-Sep-2014 07:23:29 UTC] PHP Fatal error:  Call to a member function suppress_errors() on a non-object in /home/triapptech/public_html/meterbreak/WebServices/includes/option.php on line 174
+[19-Sep-2014 11:38:43 UTC] PHP Fatal error:  Call to undefined function geoip_region_by_name() in /home/triapptech/public_html/meterbreak/WebServices/userActivation.php on line 12
+[23-Sep-2014 07:27:44 UTC] PHP Fatal error:  Cannot use object of type mysqli_result as array in /home/triapptech/public_html/meterbreak/WebServices/DBLayer.php on line 1467
+[23-Sep-2014 07:27:47 UTC] PHP Fatal error:  Cannot use object of type mysqli_result as array in /home/triapptech/public_html/meterbreak/WebServices/DBLayer.php on line 1467
+[23-Sep-2014 07:27:50 UTC] PHP Fatal error:  Cannot use object of type mysqli_result as array in /home/triapptech/public_html/meterbreak/WebServices/DBLayer.php on line 1467
+[23-Sep-2014 07:27:50 UTC] PHP Fatal error:  Cannot use object of type mysqli_result as array in /home/triapptech/public_html/meterbreak/WebServices/DBLayer.php on line 1467
+[23-Sep-2014 07:27:50 UTC] PHP Fatal error:  Cannot use object of type mysqli_result as array in /home/triapptech/public_html/meterbreak/WebServices/DBLayer.php on line 1467
+[23-Sep-2014 07:27:50 UTC] PHP Fatal error:  Cannot use object of type mysqli_result as array in /home/triapptech/public_html/meterbreak/WebServices/DBLayer.php on line 1467
+[23-Sep-2014 12:32:46 UTC] PHP Fatal error:  Call to undefined function getDailyPoll() in /home/triapptech/public_html/meterbreak/WebServices/getDailyPoll.php on line 10
+[23-Sep-2014 12:52:11 UTC] PHP Fatal error:  Allowed memory size of 67108864 bytes exhausted (tried to allocate 8388608 bytes) in /home/triapptech/public_html/meterbreak/WebServices/DBLayer.php on line 1736
+[23-Sep-2014 12:54:40 UTC] PHP Fatal error:  Allowed memory size of 67108864 bytes exhausted (tried to allocate 72 bytes) in /home/triapptech/public_html/meterbreak/WebServices/DBLayer.php on line 1737
+[23-Sep-2014 13:00:51 UTC] PHP Fatal error:  Allowed memory size of 67108864 bytes exhausted (tried to allocate 72 bytes) in /home/triapptech/public_html/meterbreak/WebServices/DBLayer.php on line 1738
+[23-Sep-2014 13:35:23 UTC] PHP Fatal error:  Allowed memory size of 67108864 bytes exhausted (tried to allocate 72 bytes) in /home/triapptech/public_html/meterbreak/WebServices/DBLayer.php on line 1738
+[23-Sep-2014 14:17:21 UTC] PHP Fatal error:  Maximum execution time of 120 seconds exceeded in /home/triapptech/public_html/meterbreak/WebServices/DBLayer.php on line 1738
+[23-Sep-2014 14:18:14 UTC] PHP Fatal error:  Maximum execution time of 120 seconds exceeded in /home/triapptech/public_html/meterbreak/WebServices/DBLayer.php on line 1738
+[30-Sep-2014 11:53:36 UTC] PHP Fatal error:  Call to undefined function getTopTenGames() in /home/triapptech/public_html/meterbreak/WebServices/getTopTenGames.php on line 6
+[14-Oct-2014 06:56:12 America/Denver] PHP Fatal error:  Uncaught exception 'Exception' with message 'DateTime::__construct() [<a href='datetime.--construct'>datetime.--construct</a>]: Failed to parse time string (7-21-1980) at position 0 (7): Unexpected character' in /home/meter/public_html/app/WebServices/DBLayer.php:2976
+Stack trace:
+#0 /home/meter/public_html/app/WebServices/DBLayer.php(2976): DateTime->__construct('7-21-1980')
+#1 /home/meter/public_html/app/WebServices/editProfile.php(18): editProfile('Hammad', 'Mukhtar', 'hammadmukhtar', 'hammad2125@gmai...', 'm', '7/21/1980', '', '')
+#2 {main}
+  thrown in /home/meter/public_html/app/WebServices/DBLayer.php on line 2976
+[14-Oct-2014 06:57:44 America/Denver] PHP Fatal error:  Uncaught exception 'Exception' with message 'DateTime::__construct() [<a href='datetime.--construct'>datetime.--construct</a>]: Failed to parse time string (07-21-1992) at position 0 (0): Unexpected character' in /home/meter/public_html/app/WebServices/DBLayer.php:2976
+Stack trace:
+#0 /home/meter/public_html/app/WebServices/DBLayer.php(2976): DateTime->__construct('07-21-1992')
+#1 /home/meter/public_html/app/WebServices/editProfile.php(18): editProfile('Hammad', 'Mukhtar', 'hammadmukhtar', 'hammad2125@gmai...', 'm', '07/21/1992', '', '')
+#2 {main}
+  thrown in /home/meter/public_html/app/WebServices/DBLayer.php on line 2976
+[14-Oct-2014 07:03:38 America/Denver] PHP Fatal error:  Uncaught exception 'Exception' with message 'DateTime::__construct() [<a href='datetime.--construct'>datetime.--construct</a>]: Failed to parse time string (07-17-1992) at position 0 (0): Unexpected character' in /home/meter/public_html/app/WebServices/DBLayer.php:2976
+Stack trace:
+#0 /home/meter/public_html/app/WebServices/DBLayer.php(2976): DateTime->__construct('07-17-1992')
+#1 /home/meter/public_html/app/WebServices/editProfile.php(18): editProfile('Hammad', 'Mukhtar', 'hammadmukhtar', 'hammad2125@gmai...', 'm', '07-17-1992', '', '')
+#2 {main}
+  thrown in /home/meter/public_html/app/WebServices/DBLayer.php on line 2976
+[14-Oct-2014 07:07:14 America/Denver] PHP Fatal error:  Uncaught exception 'Exception' with message 'DateTime::__construct() [<a href='datetime.--construct'>datetime.--construct</a>]: Failed to parse time string (7-21-1992) at position 0 (7): Unexpected character' in /home/meter/public_html/app/WebServices/DBLayer.php:2976
+Stack trace:
+#0 /home/meter/public_html/app/WebServices/DBLayer.php(2976): DateTime->__construct('7-21-1992')
+#1 /home/meter/public_html/app/WebServices/editProfile.php(18): editProfile('Hammad', 'Mukhtar', 'hammadmukhtar', 'hammad2125@gmai...', 'm', '7/21/1992', '', '')
+#2 {main}
+  thrown in /home/meter/public_html/app/WebServices/DBLayer.php on line 2976
+[14-Oct-2014 07:18:16 America/Denver] PHP Fatal error:  Uncaught exception 'Exception' with message 'DateTime::__construct() [<a href='datetime.--construct'>datetime.--construct</a>]: Failed to parse time string (Tue Oct 14 2014 18:18:13 GMT+0500 (Pakistan Standard Time)) at position 41 (a): Double timezone specification' in /home/meter/public_html/app/WebServices/DBLayer.php:2976
+Stack trace:
+#0 /home/meter/public_html/app/WebServices/DBLayer.php(2976): DateTime->__construct('Tue Oct 14 2014...')
+#1 /home/meter/public_html/app/WebServices/editProfile.php(18): editProfile('Hammad', 'Mukhtar', 'hammadmukhtar', 'hammad2125@gmai...', 'm', 'Tue Oct 14 2014...', '', NULL)
+#2 {main}
+  thrown in /home/meter/public_html/app/WebServices/DBLayer.php on line 2976
+[14-Oct-2014 07:22:19 America/Denver] PHP Fatal error:  Uncaught exception 'Exception' with message 'DateTime::__construct() [<a href='datetime.--construct'>datetime.--construct</a>]: Failed to parse time string (Tue Oct 14 2014 18:21:05 GMT+0500 (Pakistan Standard Time)) at position 41 (a): Double timezone specification' in /home/meter/public_html/app/WebServices/DBLayer.php:2976
+Stack trace:
+#0 /home/meter/public_html/app/WebServices/DBLayer.php(2976): DateTime->__construct('Tue Oct 14 2014...')
+#1 /home/meter/public_html/app/WebServices/editProfile.php(18): editProfile('Hammad', 'Mukhtar', 'hammadmukhtar', 'hammad2125@gmai...', 'm', 'Tue Oct 14 2014...', '', NULL)
+#2 {main}
+  thrown in /home/meter/public_html/app/WebServices/DBLayer.php on line 2976
+[14-Oct-2014 07:49:51 America/Denver] PHP Parse error:  syntax error, unexpected $end in /home/meter/public_html/app/WebServices/DBLayer.php on line 555
+[14-Oct-2014 07:49:52 America/Denver] PHP Parse error:  syntax error, unexpected $end, expecting T_VARIABLE or '$' in /home/meter/public_html/app/WebServices/DBLayer.php on line 2714
+[14-Oct-2014 07:49:52 America/Denver] PHP Parse error:  syntax error, unexpected $end, expecting T_VARIABLE or '$' in /home/meter/public_html/app/WebServices/DBLayer.php on line 2714
+[15-Oct-2014 03:00:37 America/Denver] PHP Fatal error:  Cannot use string offset as an array in /home/meter/public_html/app/WebServices/DBLayer.php on line 2852
+[15-Oct-2014 03:00:41 America/Denver] PHP Fatal error:  Cannot use string offset as an array in /home/meter/public_html/app/WebServices/DBLayer.php on line 3213
+[15-Oct-2014 03:01:17 America/Denver] PHP Fatal error:  Cannot use string offset as an array in /home/meter/public_html/app/WebServices/DBLayer.php on line 3213
+[15-Oct-2014 03:01:42 America/Denver] PHP Fatal error:  Cannot use string offset as an array in /home/meter/public_html/app/WebServices/DBLayer.php on line 3213
+[15-Oct-2014 03:01:56 America/Denver] PHP Fatal error:  Cannot use string offset as an array in /home/meter/public_html/app/WebServices/DBLayer.php on line 3213
+[15-Oct-2014 03:28:49 America/Denver] PHP Parse error:  syntax error, unexpected $end, expecting T_VARIABLE or T_DOLLAR_OPEN_CURLY_BRACES or T_CURLY_OPEN in /home/meter/public_html/app/WebServices/DBLayer.php on line 601
+[15-Oct-2014 07:42:17 America/Denver] PHP Parse error:  syntax error, unexpected T_CONSTANT_ENCAPSED_STRING in /home/meter/public_html/app/WebServices/DBLayer.php on line 3662
+[15-Oct-2014 07:43:04 America/Denver] PHP Fatal error:  Call to undefined function searchMembers() in /home/meter/public_html/app/WebServices/searchMembers.php on line 12
+[15-Oct-2014 08:02:33 America/Denver] PHP Parse error:  syntax error, unexpected '*' in /home/meter/public_html/app/WebServices/DBLayer.php on line 2376
+[15-Oct-2014 16:11:17 America/Denver] PHP Fatal error:  Uncaught exception 'Exception' with message 'DateTime::__construct() [<a href='datetime.--construct'>datetime.--construct</a>]: Failed to parse time string (hellow) at position 0 (h): The timezone could not be found in the database' in /home/meter/public_html/app/WebServices/DBLayer.php:3068
+Stack trace:
+#0 /home/meter/public_html/app/WebServices/DBLayer.php(3068): DateTime->__construct('hellow')
+#1 /home/meter/public_html/app/WebServices/editProfile.php(18): editProfile('', 'hammadmukhtar', 'hammad2125@gmai...', 'm', '1992-07-21', 'hellow', '', NULL)
+#2 {main}
+  thrown in /home/meter/public_html/app/WebServices/DBLayer.php on line 3068
+[15-Oct-2014 16:13:55 America/Denver] PHP Fatal error:  Uncaught exception 'Exception' with message 'DateTime::__construct() [<a href='datetime.--construct'>datetime.--construct</a>]: Failed to parse time string (hellow) at position 0 (h): The timezone could not be found in the database' in /home/meter/public_html/app/WebServices/DBLayer.php:3068
+Stack trace:
+#0 /home/meter/public_html/app/WebServices/DBLayer.php(3068): DateTime->__construct('hellow')
+#1 /home/meter/public_html/app/WebServices/editProfile.php(18): editProfile('hammadmukhtar', 'hammad2125@gmai...', 'm', 'f', '1992-07-21', 'hellow', '', NULL)
+#2 {main}
+  thrown in /home/meter/public_html/app/WebServices/DBLayer.php on line 3068
+[16-Oct-2014 02:11:04 America/Denver] PHP Warning:  move_uploaded_file(/home/meter/public_html/wp-content/uploads/1969/December/take_attendance1.png) [<a href='function.move-uploaded-file'>function.move-uploaded-file</a>]: failed to open stream: No such file or directory in /home/meter/public_html/app/WebServices/uploadFile.php on line 56
+[16-Oct-2014 02:11:04 America/Denver] PHP Warning:  move_uploaded_file() [<a href='function.move-uploaded-file'>function.move-uploaded-file</a>]: Unable to move '/tmp/phpDBLb2i' to '/home/meter/public_html/wp-content/uploads/1969/December/take_attendance1.png' in /home/meter/public_html/app/WebServices/uploadFile.php on line 56
+[16-Oct-2014 02:13:24 America/Denver] PHP Warning:  move_uploaded_file(/home/meter/public_html/wp-content/uploads/1969/December/10703964_764629180284388_5728585911426648247_n.jpg) [<a href='function.move-uploaded-file'>function.move-uploaded-file</a>]: failed to open stream: No such file or directory in /home/meter/public_html/app/WebServices/uploadFile.php on line 56
+[16-Oct-2014 02:13:24 America/Denver] PHP Warning:  move_uploaded_file() [<a href='function.move-uploaded-file'>function.move-uploaded-file</a>]: Unable to move '/tmp/phpzDPFNA' to '/home/meter/public_html/wp-content/uploads/1969/December/10703964_764629180284388_5728585911426648247_n.jpg' in /home/meter/public_html/app/WebServices/uploadFile.php on line 56
+[16-Oct-2014 02:28:10 America/Denver] PHP Parse error:  syntax error, unexpected T_IF in /home/meter/public_html/app/WebServices/DBLayer.php on line 3498
+[16-Oct-2014 02:28:36 America/Denver] PHP Parse error:  syntax error, unexpected T_IF in /home/meter/public_html/app/WebServices/DBLayer.php on line 3498
+[16-Oct-2014 02:29:19 America/Denver] PHP Parse error:  syntax error, unexpected T_IF in /home/meter/public_html/app/WebServices/DBLayer.php on line 3498
+[16-Oct-2014 02:29:32 America/Denver] PHP Parse error:  syntax error, unexpected T_IF in /home/meter/public_html/app/WebServices/DBLayer.php on line 3498
+[16-Oct-2014 02:33:10 America/Denver] PHP Parse error:  syntax error, unexpected T_VARIABLE in /home/meter/public_html/app/WebServices/DBLayer.php on line 3497
+[16-Oct-2014 02:38:27 America/Denver] PHP Parse error:  syntax error, unexpected T_VARIABLE in /home/meter/public_html/app/WebServices/DBLayer.php on line 3497
+[16-Oct-2014 03:57:54 America/Denver] PHP Parse error:  syntax error, unexpected T_VARIABLE in /home/meter/public_html/app/WebServices/DBLayer.php on line 3831
+[16-Oct-2014 04:17:23 America/Denver] PHP Parse error:  syntax error, unexpected $end in /home/meter/public_html/app/WebServices/DBLayer.php on line 2126
+[16-Oct-2014 04:17:24 America/Denver] PHP Parse error:  syntax error, unexpected $end in /home/meter/public_html/app/WebServices/DBLayer.php on line 2126
+[16-Oct-2014 05:47:42 America/Denver] PHP Fatal error:  Call to undefined function updateProfilePicture() in /home/meter/public_html/app/WebServices/uploadFile.php on line 54
+[16-Oct-2014 05:54:14 America/Denver] PHP Fatal error:  Call to undefined function updateProfilePicture() in /home/meter/public_html/app/WebServices/uploadFile.php on line 54
+[16-Oct-2014 06:04:11 America/Denver] PHP Fatal error:  Call to undefined function updateProfilePicture() in /home/meter/public_html/app/WebServices/uploadFile.php on line 5
+[20-Oct-2014 23:43:54 America/Denver] PHP Parse error:  syntax error, unexpected T_VARIABLE in /home/meter/public_html/app/WebServices/DBLayer.php on line 4442
+[20-Oct-2014 23:43:55 America/Denver] PHP Parse error:  syntax error, unexpected T_VARIABLE in /home/meter/public_html/app/WebServices/DBLayer.php on line 4442
+[20-Oct-2014 23:43:57 America/Denver] PHP Parse error:  syntax error, unexpected T_VARIABLE in /home/meter/public_html/app/WebServices/DBLayer.php on line 4442
+[20-Oct-2014 23:44:24 America/Denver] PHP Parse error:  syntax error, unexpected T_VARIABLE in /home/meter/public_html/app/WebServices/DBLayer.php on line 4442
+[20-Oct-2014 23:44:25 America/Denver] PHP Parse error:  syntax error, unexpected T_VARIABLE in /home/meter/public_html/app/WebServices/DBLayer.php on line 4442
+[20-Oct-2014 23:44:31 America/Denver] PHP Parse error:  syntax error, unexpected T_VARIABLE in /home/meter/public_html/app/WebServices/DBLayer.php on line 4442
+[20-Oct-2014 23:50:45 America/Denver] PHP Parse error:  syntax error, unexpected T_VARIABLE in /home/meter/public_html/app/WebServices/DBLayer.php on line 4444
+[20-Oct-2014 23:50:52 America/Denver] PHP Parse error:  syntax error, unexpected T_VARIABLE in /home/meter/public_html/app/WebServices/DBLayer.php on line 4444
+[21-Oct-2014 00:35:31 America/Denver] PHP Parse error:  syntax error, unexpected $end in /home/meter/public_html/app/WebServices/DBLayer.php on line 539
+[21-Oct-2014 00:35:31 America/Denver] PHP Parse error:  syntax error, unexpected $end in /home/meter/public_html/app/WebServices/DBLayer.php on line 1241
+[22-Oct-2014 00:58:47 America/Denver] PHP Parse error:  syntax error, unexpected $end, expecting T_VARIABLE or T_ENCAPSED_AND_WHITESPACE or T_DOLLAR_OPEN_CURLY_BRACES or T_CURLY_OPEN in /home/meter/public_html/app/WebServices/DBLayer.php on line 3014
+[22-Oct-2014 01:03:41 America/Denver] PHP Parse error:  syntax error, unexpected '[' in /home/meter/public_html/app/WebServices/DBLayer.php on line 5014
+[22-Oct-2014 01:04:34 America/Denver] PHP Parse error:  syntax error, unexpected '[' in /home/meter/public_html/app/WebServices/DBLayer.php on line 5014
+[22-Oct-2014 09:36:10 America/Denver] PHP Parse error:  syntax error, unexpected '[' in /home/meter/public_html/app/WebServices/DBLayer.php on line 5101
+[22-Oct-2014 09:36:26 America/Denver] PHP Parse error:  syntax error, unexpected '[' in /home/meter/public_html/app/WebServices/DBLayer.php on line 5101
+[22-Oct-2014 09:43:13 America/Denver] PHP Parse error:  syntax error, unexpected '[' in /home/meter/public_html/app/WebServices/DBLayer.php on line 5102
+[24-Oct-2014 06:16:02 America/Denver] PHP Parse error:  syntax error, unexpected $end in /home/meter/public_html/app/WebServices/DBLayer.php on line 2971
+[24-Oct-2014 07:31:47 America/Denver] PHP Parse error:  syntax error, unexpected $end in /home/meter/public_html/app/WebServices/DBLayer.php on line 3105
+[26-Oct-2014 22:56:32 America/Denver] PHP Parse error:  syntax error, unexpected '.' in /home/meter/public_html/app/WebServices/DBLayer.php on line 5556
+[26-Oct-2014 22:56:50 America/Denver] PHP Parse error:  syntax error, unexpected '.' in /home/meter/public_html/app/WebServices/DBLayer.php on line 5556
+[26-Oct-2014 22:57:09 America/Denver] PHP Parse error:  syntax error, unexpected '.' in /home/meter/public_html/app/WebServices/DBLayer.php on line 5556
+[26-Oct-2014 22:57:29 America/Denver] PHP Parse error:  syntax error, unexpected '.' in /home/meter/public_html/app/WebServices/DBLayer.php on line 5556
+[26-Oct-2014 22:57:48 America/Denver] PHP Parse error:  syntax error, unexpected '.' in /home/meter/public_html/app/WebServices/DBLayer.php on line 5556
+[26-Oct-2014 22:58:43 America/Denver] PHP Parse error:  syntax error, unexpected '.' in /home/meter/public_html/app/WebServices/DBLayer.php on line 5556
+[26-Oct-2014 23:02:14 America/Denver] PHP Parse error:  syntax error, unexpected '{' in /home/meter/public_html/app/WebServices/DBLayer.php on line 5573
+[26-Oct-2014 23:12:22 America/Denver] PHP Parse error:  syntax error, unexpected T_ECHO, expecting ',' or ';' in /home/meter/public_html/app/WebServices/DBLayer.php on line 5603
+[26-Oct-2014 23:12:23 America/Denver] PHP Parse error:  syntax error, unexpected T_ECHO, expecting ',' or ';' in /home/meter/public_html/app/WebServices/DBLayer.php on line 5603
+[26-Oct-2014 23:26:33 America/Denver] PHP Fatal error:  Call to undefined function checkSurvey() in /home/meter/public_html/app/WebServices/checkSurvey.php on line 13
+[26-Oct-2014 23:26:34 America/Denver] PHP Parse error:  syntax error, unexpected $end in /home/meter/public_html/app/WebServices/DBLayer.php on line 1126
+[26-Oct-2014 23:26:35 America/Denver] PHP Parse error:  syntax error, unexpected $end, expecting T_VARIABLE or T_DOLLAR_OPEN_CURLY_BRACES or T_CURLY_OPEN in /home/meter/public_html/app/WebServices/DBLayer.php on line 3698
+[26-Oct-2014 23:26:35 America/Denver] PHP Parse error:  syntax error, unexpected T_ENCAPSED_AND_WHITESPACE, expecting ']' in /home/meter/public_html/app/WebServices/DBLayer.php on line 4643
+[27-Oct-2014 00:57:22 America/Denver] PHP Fatal error:  Call to undefined function getTopTenGames() in /home/meter/public_html/app/WebServices/getTopTenGames.php on line 7
+[27-Oct-2014 00:57:25 America/Denver] PHP Parse error:  syntax error, unexpected $end in /home/meter/public_html/app/WebServices/DBLayer.php on line 4777
+[28-Oct-2014 07:35:29 America/Denver] PHP Parse error:  syntax error, unexpected $end in /home/meter/public_html/app/WebServices/DBLayer.php on line 108
+[28-Oct-2014 07:35:36 America/Denver] PHP Parse error:  syntax error, unexpected $end in /home/meter/public_html/app/WebServices/DBLayer.php on line 1146
+[28-Oct-2014 07:35:39 America/Denver] PHP Parse error:  syntax error, unexpected $end in /home/meter/public_html/app/WebServices/DBLayer.php on line 1866
+[28-Oct-2014 09:25:10 America/Denver] PHP Parse error:  syntax error, unexpected T_OBJECT_OPERATOR in /home/meter/public_html/app/WebServices/DBLayer.php on line 5263
+[28-Oct-2014 09:28:13 America/Denver] PHP Parse error:  syntax error, unexpected $end, expecting T_VARIABLE or T_DOLLAR_OPEN_CURLY_BRACES or T_CURLY_OPEN in /home/meter/public_html/app/WebServices/DBLayer.php on line 4729
+[29-Oct-2014 13:39:17 America/Denver] PHP Fatal error:  Call to undefined function getUserTopGames() in /home/meter/public_html/app/WebServices/getUserTopGames.php on line 16
+[29-Oct-2014 13:39:20 America/Denver] PHP Fatal error:  Call to undefined function getTopTenGames() in /home/meter/public_html/app/WebServices/getTopTenGames.php on line 7
